@@ -46,8 +46,13 @@ export function validarDisciplina({ nome, cargaHoraria, mediaMinima }) {
  * { percentualPresenca, faltasRestantes, status }
  * maxFaltas = Math.floor(cargaHoraria * LIMITE_FALTAS)
  * status: faltas > max → "Reprovado por falta"; faltas === max → "No limite"; senão "Regular"
+ * Carga horária <= 0 ou faltas inválidas → throw new Error("Dados de frequência inválidos").
  */
 export function calcularFrequencia(cargaHoraria, faltas) {
+  if (!ehNumero(cargaHoraria) || cargaHoraria <= 0 || !validarFaltas(faltas, cargaHoraria)) {
+    throw new Error('Dados de frequência inválidos');
+  }
+
   const maxFaltas = Math.floor(cargaHoraria * LIMITE_FALTAS);
   const percentualPresenca = arredondar1(((cargaHoraria - faltas) / cargaHoraria) * 100);
   const faltasRestantes = Math.max(0, maxFaltas - faltas);
