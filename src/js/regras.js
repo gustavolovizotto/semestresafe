@@ -64,10 +64,10 @@ export function calcularFrequencia(cargaHoraria, faltas) {
 
 /**
  * P2 necessária = 2 * mediaMinima - p1 (1 casa decimal).
- * <= 0 → "Aprovado"; > 10 → "Reprovado"; p1 inválida → throw new Error("Nota inválida").
+ * <= 0 → "Aprovado"; > 10 → "Reprovado"; p1 ou mediaMinima inválida → throw new Error("Nota inválida").
  */
 export function calcularNotaNecessaria(mediaMinima, p1) {
-  if (!validarNota(p1)) {
+  if (!validarNota(mediaMinima) || !validarNota(p1)) {
     throw new Error('Nota inválida');
   }
 
