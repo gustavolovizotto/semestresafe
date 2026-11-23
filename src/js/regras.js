@@ -7,18 +7,39 @@ export const LIMITE_FALTAS = 0.25;
 
 const naoImplementado = (nome) => { throw new Error(`${nome}: não implementado`); };
 
+/** true se o valor é do tipo number e não é NaN. */
+const ehNumero = (valor) => typeof valor === 'number' && !Number.isNaN(valor);
+
 /** true se n é número entre 0 e 10. */
-export function validarNota(n) { return naoImplementado('validarNota'); }
+export function validarNota(n) {
+  return ehNumero(n) && n >= 0 && n <= 10;
+}
 
 /** true se faltas é inteiro, >= 0 e <= cargaHoraria. */
-export function validarFaltas(faltas, cargaHoraria) { return naoImplementado('validarFaltas'); }
+export function validarFaltas(faltas, cargaHoraria) {
+  return Number.isInteger(faltas) && faltas >= 0 && faltas <= cargaHoraria;
+}
 
 /**
  * Lista de mensagens de erro (vazia = válida):
  * "Informe o nome da disciplina." | "A carga horária deve ser maior que zero." |
  * "A média mínima deve estar entre 0 e 10."
  */
-export function validarDisciplina({ nome, cargaHoraria, mediaMinima }) { return naoImplementado('validarDisciplina'); }
+export function validarDisciplina({ nome, cargaHoraria, mediaMinima }) {
+  const erros = [];
+
+  if (typeof nome !== 'string' || nome.trim() === '') {
+    erros.push('Informe o nome da disciplina.');
+  }
+  if (!ehNumero(cargaHoraria) || cargaHoraria <= 0) {
+    erros.push('A carga horária deve ser maior que zero.');
+  }
+  if (!ehNumero(mediaMinima) || mediaMinima < 0 || mediaMinima > 10) {
+    erros.push('A média mínima deve estar entre 0 e 10.');
+  }
+
+  return erros;
+}
 
 /**
  * { percentualPresenca, faltasRestantes, status }
