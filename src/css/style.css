@@ -74,7 +74,8 @@ button {
   cursor: pointer;
 }
 
-button:hover { filter: brightness(0.92); }
+button:hover:not(:disabled) { filter: brightness(0.92); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 button.secundario { background: #e4e7eb; color: var(--texto); }
 button.perigo { background: transparent; color: var(--vermelho); border: 1px solid var(--vermelho); }
