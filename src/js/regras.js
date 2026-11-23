@@ -5,8 +5,6 @@
 /** Limite de faltas: 25% da carga horária. Use esta constante no cálculo. */
 export const LIMITE_FALTAS = 0.25;
 
-const naoImplementado = (nome) => { throw new Error(`${nome}: não implementado`); };
-
 /** true se o valor é do tipo number e não é NaN. */
 const ehNumero = (valor) => typeof valor === 'number' && !Number.isNaN(valor);
 
@@ -68,4 +66,14 @@ export function calcularFrequencia(cargaHoraria, faltas) {
  * P2 necessária = 2 * mediaMinima - p1 (1 casa decimal).
  * <= 0 → "Aprovado"; > 10 → "Reprovado"; p1 inválida → throw new Error("Nota inválida").
  */
-export function calcularNotaNecessaria(mediaMinima, p1) { return naoImplementado('calcularNotaNecessaria'); }
+export function calcularNotaNecessaria(mediaMinima, p1) {
+  if (!validarNota(p1)) {
+    throw new Error('Nota inválida');
+  }
+
+  const necessaria = arredondar1(2 * mediaMinima - p1);
+
+  if (necessaria <= 0) return 'Aprovado';
+  if (necessaria > 10) return 'Reprovado';
+  return necessaria;
+}
