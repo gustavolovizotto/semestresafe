@@ -116,6 +116,13 @@ function calcularP2(id, campo, saida) {
   renderizar();
 }
 
+/** Tira a disciplina da lista, salva e redesenha. */
+function remover(id) {
+  disciplinas = disciplinas.filter((x) => x.id !== id);
+  salvar();
+  renderizar();
+}
+
 function criarItem(d) {
   const freq = calcularFrequencia(d.cargaHoraria, d.faltas);
   const classe = CLASSE_STATUS[freq.status];
@@ -128,7 +135,12 @@ function criarItem(d) {
     criar('h3', '', d.nome),
     criar('p', 'info', `${d.cargaHoraria} h · média mínima ${fmt(d.mediaMinima)}`),
   );
-  topo.append(titulo, criar('span', `status ${classe}`, freq.status));
+  const acoes = criar('div', 'acoes');
+  const botaoRemover = criar('button', 'perigo', 'Remover');
+  botaoRemover.type = 'button';
+  botaoRemover.addEventListener('click', () => remover(d.id));
+  acoes.append(criar('span', `status ${classe}`, freq.status), botaoRemover);
+  topo.append(titulo, acoes);
 
   // Faltas
   const linhaFaltas = criar('div', 'linha');

@@ -178,3 +178,10 @@ label.inline {
   gap: 0.5rem;
   color: var(--texto);
 }
+
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
