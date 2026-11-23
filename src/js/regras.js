@@ -1,0 +1,34 @@
+// Regras de negócio do SemestreSafe: tarefa da Pessoa 3.
+// Funções puras (sem document/window/localStorage). Os nomes e retornos são o
+// contrato do grupo: a tela (app.js) e os testes dependem deles.
+
+/** Limite de faltas: 25% da carga horária. Use esta constante no cálculo. */
+export const LIMITE_FALTAS = 0.25;
+
+const naoImplementado = (nome) => { throw new Error(`${nome}: não implementado`); };
+
+/** true se n é número entre 0 e 10. */
+export function validarNota(n) { return naoImplementado('validarNota'); }
+
+/** true se faltas é inteiro, >= 0 e <= cargaHoraria. */
+export function validarFaltas(faltas, cargaHoraria) { return naoImplementado('validarFaltas'); }
+
+/**
+ * Lista de mensagens de erro (vazia = válida):
+ * "Informe o nome da disciplina." | "A carga horária deve ser maior que zero." |
+ * "A média mínima deve estar entre 0 e 10."
+ */
+export function validarDisciplina({ nome, cargaHoraria, mediaMinima }) { return naoImplementado('validarDisciplina'); }
+
+/**
+ * { percentualPresenca, faltasRestantes, status }
+ * maxFaltas = Math.floor(cargaHoraria * LIMITE_FALTAS)
+ * status: faltas > max → "Reprovado por falta"; faltas === max → "No limite"; senão "Regular"
+ */
+export function calcularFrequencia(cargaHoraria, faltas) { return naoImplementado('calcularFrequencia'); }
+
+/**
+ * P2 necessária = 2 * mediaMinima - p1 (1 casa decimal).
+ * <= 0 → "Aprovado"; > 10 → "Reprovado"; p1 inválida → throw new Error("Nota inválida").
+ */
+export function calcularNotaNecessaria(mediaMinima, p1) { return naoImplementado('calcularNotaNecessaria'); }
