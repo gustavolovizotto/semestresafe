@@ -29,7 +29,10 @@ jobs:
             echo "ok: $f"
           done
       - name: Verificar sintaxe do JavaScript
-        run: for f in src/js/*.js tests/*.js; do node --check "$f" && echo "ok: $f"; done
+        run: |
+          for f in src/js/*.js tests/*.js; do
+            node --check "$f" && echo "ok: $f"
+          done
 
   test:
     name: Testes automatizados
