@@ -7,12 +7,41 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Tela: tarefa da Pessoa 2 (formulário de disciplina + lista) -->
   <header>
     <h1>SemestreSafe</h1>
     <p>Controle de faltas e simulador de aprovação.</p>
   </header>
-  <main id="app"></main>
+
+  <main id="app">
+    <section class="cartao">
+      <h2>Nova disciplina</h2>
+      <form id="form-disciplina" novalidate>
+        <div class="campos">
+          <label>
+            Nome
+            <input type="text" id="nome" placeholder="Ex.: Cálculo 1" autocomplete="off">
+          </label>
+          <label>
+            Carga horária (h)
+            <input type="number" id="carga" min="1" step="1" placeholder="Ex.: 60">
+          </label>
+          <label>
+            Média mínima
+            <input type="number" id="media" min="0" max="10" step="0.1" value="6">
+          </label>
+        </div>
+        <ul id="erros" class="erros" role="alert"></ul>
+        <button type="submit">Adicionar disciplina</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Minhas disciplinas</h2>
+      <p id="vazio" class="vazio">Nenhuma disciplina cadastrada ainda.</p>
+      <ul id="lista" class="lista"></ul>
+    </section>
+  </main>
+
   <footer>Versão: <span id="versao">desenvolvimento</span></footer>
   <script type="module" src="js/app.js"></script>
 </body>
