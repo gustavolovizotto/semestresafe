@@ -171,3 +171,10 @@ footer {
   .campos { grid-template-columns: 1fr; }
   form > button { width: 100%; }
 }
+
+label.inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--texto);
+}

@@ -38,6 +38,9 @@ function lerNumero(campo) {
   return campo.value.trim() === '' ? NaN : Number(campo.value);
 }
 
+/** Formata número no padrão brasileiro (83.3 → "83,3"). */
+const fmt = (n) => n.toLocaleString('pt-BR');
+
 /** Cria um elemento com classe e texto (sempre via textContent, nunca innerHTML). */
 function criar(tag, classe, texto) {
   const el = document.createElement(tag);
@@ -92,6 +95,27 @@ function alterarFaltas(id, delta) {
   renderizar();
 }
 
+/** Texto e classe do resultado do simulador, a partir do retorno de calcularNotaNecessaria. */
+function descreverResultado(resultado) {
+  if (resultado === 'Aprovado') return { texto: 'Aprovado: qualquer nota na P2 já garante a média.', classe: 'ok' };
+  if (resultado === 'Reprovado') return { texto: 'Reprovado: nem 10 na P2 alcança a média.', classe: 'erro' };
+  return { texto: `Você precisa de ${fmt(resultado)} na P2.`, classe: 'alerta' };
+}
+
+/** Valida a P1 digitada; se for válida, salva e redesenha. Se não, mostra o erro no próprio item. */
+function calcularP2(id, campo, saida) {
+  const p1 = campo.value.trim() === '' ? NaN : Number(campo.value);
+  if (!validarNota(p1)) {
+    saida.className = 'resultado erro';
+    saida.textContent = 'Informe uma nota entre 0 e 10.';
+    return;
+  }
+  const d = disciplinas.find((x) => x.id === id);
+  d.p1 = p1;
+  salvar();
+  renderizar();
+}
+
 function criarItem(d) {
   const freq = calcularFrequencia(d.cargaHoraria, d.faltas);
   const classe = CLASSE_STATUS[freq.status];
@@ -102,7 +126,7 @@ function criarItem(d) {
   const titulo = criar('div');
   titulo.append(
     criar('h3', '', d.nome),
-    criar('p', 'info', `${d.cargaHoraria} h · média mínima ${d.mediaMinima}`),
+    criar('p', 'info', `${d.cargaHoraria} h · média mínima ${fmt(d.mediaMinima)}`),
   );
   topo.append(titulo, criar('span', `status ${classe}`, freq.status));
 
@@ -121,11 +145,39 @@ function criarItem(d) {
   // Frequência
   const linhaFreq = criar('div', 'linha');
   linhaFreq.append(
-    criar('span', '', `Presença: ${freq.percentualPresenca}%`),
+    criar('span', '', `Presença: ${fmt(freq.percentualPresenca)}%`),
     criar('span', '', `· Ainda pode faltar: ${freq.faltasRestantes} h`),
   );
 
-  item.append(topo, linhaFaltas, linhaFreq);
+  // Simulador da P2 (o resultado vem da P1 salva, então sobrevive ao recarregar a página)
+  const linhaNota = criar('div', 'linha');
+  const rotulo = criar('label', 'inline', 'Nota P1');
+  const campoP1 = document.createElement('input');
+  campoP1.type = 'number';
+  campoP1.min = '0';
+  campoP1.max = '10';
+  campoP1.step = '0.1';
+  campoP1.placeholder = '0 a 10';
+  if (d.p1 !== null) campoP1.value = d.p1;
+  rotulo.append(campoP1);
+  const calcular = criar('button', '', 'Calcular');
+  calcular.type = 'button';
+  const saida = criar('span', 'resultado');
+  calcular.addEventListener('click', () => calcularP2(d.id, campoP1, saida));
+  campoP1.addEventListener('keydown', (e) => { if (e.key === 'Enter') calcularP2(d.id, campoP1, saida); });
+  if (d.p1 !== null) {
+    try {
+      const { texto, classe } = descreverResultado(calcularNotaNecessaria(d.mediaMinima, d.p1));
+      saida.className = `resultado ${classe}`;
+      saida.textContent = texto;
+    } catch {
+      saida.className = 'resultado erro';
+      saida.textContent = 'Nota inválida.';
+    }
+  }
+  linhaNota.append(rotulo, calcular, saida);
+
+  item.append(topo, linhaFaltas, linhaFreq, linhaNota);
   return item;
 }
 
