@@ -10,6 +10,9 @@ const naoImplementado = (nome) => { throw new Error(`${nome}: não implementado`
 /** true se o valor é do tipo number e não é NaN. */
 const ehNumero = (valor) => typeof valor === 'number' && !Number.isNaN(valor);
 
+/** Arredonda para 1 casa decimal (ex.: 83.333 → 83.3). */
+const arredondar1 = (valor) => Math.round(valor * 10) / 10;
+
 /** true se n é número entre 0 e 10. */
 export function validarNota(n) {
   return ehNumero(n) && n >= 0 && n <= 10;
@@ -46,7 +49,20 @@ export function validarDisciplina({ nome, cargaHoraria, mediaMinima }) {
  * maxFaltas = Math.floor(cargaHoraria * LIMITE_FALTAS)
  * status: faltas > max → "Reprovado por falta"; faltas === max → "No limite"; senão "Regular"
  */
-export function calcularFrequencia(cargaHoraria, faltas) { return naoImplementado('calcularFrequencia'); }
+export function calcularFrequencia(cargaHoraria, faltas) {
+  const maxFaltas = Math.floor(cargaHoraria * LIMITE_FALTAS);
+  const percentualPresenca = arredondar1(((cargaHoraria - faltas) / cargaHoraria) * 100);
+  const faltasRestantes = Math.max(0, maxFaltas - faltas);
+
+  let status = 'Regular';
+  if (faltas > maxFaltas) {
+    status = 'Reprovado por falta';
+  } else if (faltas === maxFaltas) {
+    status = 'No limite';
+  }
+
+  return { percentualPresenca, faltasRestantes, status };
+}
 
 /**
  * P2 necessária = 2 * mediaMinima - p1 (1 casa decimal).
