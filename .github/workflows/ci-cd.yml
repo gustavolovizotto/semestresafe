@@ -1,0 +1,74 @@
+# Pipeline do SemestreSafe
+# CI (build + test) roda em todo push e pull request para a main.
+# CD (entrega + publicação) só roda em push na main, e só se build e test passarem.
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (verificação dos arquivos)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verificar arquivos obrigatórios
+        run: |
+          for f in src/index.html src/css/style.css src/js/app.js src/js/regras.js package.json; do
+            test -f "$f" || { echo "::error::Arquivo obrigatório ausente: $f"; exit 1; }
+            echo "ok: $f"
+          done
+      - name: Verificar sintaxe do JavaScript
+        run: for f in src/js/*.js tests/*.js; do node --check "$f" && echo "ok: $f"; done
+
+  test:
+    name: Testes automatizados
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Rodar testes
+        run: npm test
+
+  entrega:
+    name: Entrega (gera o artefato)
+    needs: [build, test]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Montar versão validada
+        run: |
+          cp -r src dist
+          echo "${GITHUB_SHA::7} ($(date -u +%Y-%m-%d))" > dist/versao.txt
+          cat dist/versao.txt
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publicacao:
+    name: Publicação (GitHub Pages)
+    needs: entrega
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

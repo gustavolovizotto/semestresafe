@@ -1,0 +1,11 @@
+{
+  "name": "semestresafe",
+  "version": "1.0.0",
+  "description": "Controle de faltas e simulador de aprovação universitária",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "start": "npx serve src"
+  }
+}
