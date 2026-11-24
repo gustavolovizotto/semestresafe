@@ -53,7 +53,7 @@ cd semestresafe
 npm start
 ```
 
-O comando `npm start` executa `npx serve src` e disponibiliza a aplicação em `http://localhost:3000`.
+O comando `npm start` executa `npx serve src` e disponibiliza a aplicação em `http://localhost:3000`. Não é necessário rodar `npm install` antes, mas na primeira execução o `npx` baixa o pacote `serve` do registro do npm (exige internet e pode pedir confirmação no terminal).
 
 ## Como rodar os testes
 
@@ -61,7 +61,7 @@ O comando `npm start` executa `npx serve src` e disponibiliza a aplicação em `
 npm test
 ```
 
-O comando executa `node --test`, rodando todos os arquivos de teste dentro da pasta `tests/`. Não é necessário instalar pacotes com `npm install`, pois o projeto usa apenas módulos nativos do Node.js.
+O comando executa `node --test`, que localiza e roda automaticamente os arquivos de teste do projeto (como `tests/*.test.js`). Os testes usam apenas módulos nativos do Node.js e rodam sem instalar pacotes nem precisar de conexão com a internet.
 
 ## Pipeline (`.github/workflows/ci-cd.yml`)
 
@@ -76,7 +76,7 @@ O pipeline é disparado em `push` e `pull_request` para a branch `main`, além d
 
 ### Como funciona a entrega e a publicação
 
-1. **Verificação (CI):** em qualquer `push` ou `pull_request` para a `main`, o job `build` confere se os arquivos obrigatórios existem (`src/index.html`, `src/css/style.css`, `src/js/app.js`, `src/js/regras.js` e `package.json`) e valida a sintaxe de todos os arquivos `.js` com `node --check`. Em seguida, o job `test` executa `npm test`.
+1. **Verificação (CI):** em qualquer `push` ou `pull_request` para a `main`, o job `build` confere se os arquivos obrigatórios existem (`src/index.html`, `src/css/style.css`, `src/js/app.js`, `src/js/regras.js` e `package.json`) e executa `node --check` sobre os arquivos `.js` de `src/js/` e `tests/`. Em seguida, o job `test` executa `npm test`.
 2. **Bloqueio em caso de falha:** o job `entrega` depende explicitamente de `build` e `test` (`needs: [build, test]`) e só roda fora de Pull Requests (`if: github.event_name != 'pull_request'`). Se qualquer verificação ou teste falhar, **Entrega e Publicação não rodam** (ficam marcadas como *skipped*) e a versão anterior continua no ar no GitHub Pages.
 3. **Artefato e rastreabilidade (CD):** quando os testes passam em um `push` na `main`, o job `entrega` copia `src/` para `dist/`, grava os 7 primeiros caracteres do hash do commit junto com a data UTC em `dist/versao.txt` e envia o artefato via `actions/upload-pages-artifact`. O job `publicacao` faz o deploy no GitHub Pages com `actions/deploy-pages`.
 4. **Conferência no site:** o script `src/js/app.js` lê `versao.txt` e exibe o commit publicado no rodapé da página, permitindo conferir exatamente qual versão do repositório está no ar.
@@ -98,4 +98,4 @@ O pipeline é disparado em `push` e `pull_request` para a branch `main`, além d
 2. Faça commits pequenos e claros em português (`feat:`, `fix:`, `test:`, `docs:`, `ci:`, `style:`, `chore:`).
 3. Envie a branch e abra um Pull Request para a `main`.
 4. Aguarde o pipeline de CI (`Build` e `Testes`) passar e a revisão de outro integrante antes do merge.
-5. Ninguém faz `push` direto na `main` (branch protegida).
+5. Após os commits iniciais de configuração do repositório e do pipeline, a branch `main` foi protegida: ninguém faz `push` direto nela.

@@ -1,6 +1,6 @@
 # Relatório Técnico — Operação Deploy: SemestreSafe
 
-> **Nota de preenchimento:** Este arquivo é o rascunho base do relatório que será exportado para PDF. As partes dependentes dos demais integrantes ou de execuções finais do pipeline estão marcadas com `[PENDENTE – responsável]`.
+> **Nota de preenchimento (remover antes de exportar o PDF final):** Este arquivo é o rascunho base do relatório que será exportado para PDF. As partes dependentes dos demais integrantes ou de execuções finais do pipeline estão marcadas com `[PENDENTE – responsável]`. Antes de gerar o PDF final, remover também: o bloco *"Referência do código..."* na Seção 3, a *"Observação sobre o estado atual na `main`"* na Seção 7 e o *"Roteiro rápido de perguntas"* na Seção 11.
 
 ## Sumário
 
@@ -121,9 +121,9 @@ npm test
 npm start
 ```
 
-O arquivo `package.json` define apenas dois scripts, ambos sem necessidade de instalação prévia de dependências (`node_modules`):
-- `"test": "node --test"`
-- `"start": "npx serve src"`
+O arquivo `package.json` define apenas dois scripts, sem necessidade de rodar `npm install` previamente (`node_modules` local):
+- `"test": "node --test"` — executa os testes localmente usando apenas módulos nativos do Node.js (funciona totalmente offline).
+- `"start": "npx serve src"` — sobe o servidor estático local; na primeira execução, o `npx` baixa sob demanda o pacote `serve` do registro do npm (exige conexão com a internet e pode solicitar confirmação no terminal).
 
 ---
 
@@ -177,10 +177,10 @@ Para evitar conflitos e garantir que nenhum código chegue à versão principal 
 
 - `feat/disciplinas` — desenvolvimento da interface e interação com o usuário (João Vitor Romani — PR `#2`);
 - `feat/regras` — implementação das regras de negócio (Felipe Gomes — PR `#1`, já integrado na `main`);
-- `test/regras` — testes unitários das regras de negócio (Samuel Ueno);
+- `test/regras` — testes unitários das regras de negócio (Samuel Ueno — `[PENDENTE – incluir número do PR]`);
 - `docs/readme` — atualização do `README.md`, relatório técnico e roteiro da apresentação (João Vitor Trindade — PR `#3`).
 
-A branch `main` foi configurada como **protegida** no GitHub, bloqueando pushes diretos. Toda contribuição precisa seguir o fluxo:
+Os primeiros commits do repositório (`e853114` a `9a63bd0`, referentes à estrutura inicial, ao contrato base e aos ajustes iniciais do workflow) foram realizados diretamente na `main` durante a configuração inicial do ambiente. Concluída essa preparação, a branch `main` foi configurada como **protegida** no GitHub, bloqueando pushes diretos. A partir daí, todas as tarefas do grupo seguiram o fluxo:
 1. Criar branch específica a partir da `main` atualizada;
 2. Realizar commits pequenos e descritivos;
 3. Abrir um Pull Request (PR) para a `main`;
@@ -244,7 +244,7 @@ permissions:
 Como a aplicação usa HTML, CSS e JavaScript puro (sem etapa de compilação ou transpilação), o job `build` atua como validação estrutural e sintática:
 1. Faz checkout do repositório (`actions/checkout@v5`) e configura o Node.js 22 (`actions/setup-node@v5`).
 2. Verifica com `test -f` se os cinco arquivos essenciais (`src/index.html`, `src/css/style.css`, `src/js/app.js`, `src/js/regras.js` e `package.json`) existem. Caso algum esteja ausente, encerra o job com erro (`exit 1`).
-3. Roda `node --check` em todos os arquivos `.js` de `src/js/` e `tests/`, detectando erros de sintaxe antes da execução dos testes.
+3. Roda `node --check` sobre os arquivos `.js` de `src/js/` e `tests/`. *(Observação técnica: na escrita atual `node --check "$f" && echo "ok: $f"` dentro do laço `for`, o `bash -e` considera apenas o código de saída da última iteração do loop; caso haja erro de sintaxe em um dos primeiros arquivos e o último esteja válido, o bloqueio efetivo ocorre logo em seguida no job `test` ao importar os módulos, ou pode ser antecipado trocando o trecho por `node --check "$f" || exit 1`.)*
 
 ### Job `test` — Testes automatizados
 
@@ -268,7 +268,7 @@ O job `test` usa a cláusula **`needs: build`**, o que estabelece dependência d
 
 Dois mecanismos do YAML garantem a segurança do pipeline:
 - **`needs`:** encadeia os jobs na ordem `build` → `test` → `entrega` → `publicacao` (`needs: [build, test]` na entrega e `needs: entrega` na publicação). Por padrão no GitHub Actions, se qualquer job listado em `needs` falhar, os jobs dependentes não são executados e aparecem como *skipped*.
-- **`if: github.event_name != 'pull_request'`:** aplicada no job `entrega`, essa condição garante que Pull Requests executem apenas as checagens de CI (`build` e `test`), sem gerar artefato nem sobrescrever a versão em produção. Somente eventos fora de PR (como `push` na `main` ou `workflow_dispatch`) prosseguem para entrega e publicação.
+- **`if: github.event_name != 'pull_request'`:** aplicada no job `entrega`, essa condição garante que Pull Requests executem apenas as checagens de CI (`build` e `test`), sem gerar artefato nem sobrescrever a versão em produção. Eventos fora de PR (`push` na `main` ou disparo manual via `workflow_dispatch`) passam por essa condição; no caso de um `workflow_dispatch` acionado em outra branch, a proteção contra deploy indevido no GitHub Pages fica a cargo da restrição de branch configurada no ambiente `github-pages` (restrito à `main`).
 
 ### Evidência do pipeline em execução com sucesso
 
@@ -352,11 +352,11 @@ Embora os dois termos usem a mesma sigla (CD), eles representam níveis diferent
 
 ## 9. Simulação de falha, bloqueio e recuperação
 
-Para demonstrar na prática que o pipeline protege o ambiente publicado, foi planejado um teste controlado de falha, bloqueio e recuperação:
+Para demonstrar na prática que o pipeline protege o ambiente publicado, foi planejado um teste controlado de falha, bloqueio e recuperação **após a integração da suíte de comportamento (`test/regras`) na `main`** — já que `tests/contrato.test.js` valida apenas os tipos exportados (`typeof === 'number'`), enquanto `tests/regras.test.js` verifica os resultados reais do limite de 25% (por exemplo, para carga horária `60` e `15` faltas, `calcularFrequencia(60, 15).status` deve retornar `'No limite'`, mas retornaria `'Regular'` com limite de 50%):
 
-1. **Introdução da falha:** alterar a constante `LIMITE_FALTAS` em `src/js/regras.js` de `0.25` (25%) para `0.50` (50%), violando diretamente a regra de negócio de frequência da aplicação.
-2. **Execução e bloqueio automático:** ao acionar o pipeline com essa alteração, o job `build` continua passando (já que todos os arquivos obrigatórios permanecem presentes e a sintaxe JavaScript continua válida), mas o job `test` falha nos testes de cálculo de frequência. Como `entrega` possui `needs: [build, test]` e `publicacao` possui `needs: entrega`, ambos os jobs ficam com status **skipped** (pulados). Com isso, o deploy é bloqueado e a versão anteriormente publicada continua no ar sem sofrer impacto.
-3. **Correção e recuperação:** após reverter `LIMITE_FALTAS` para `0.25` e enviar a correção, o pipeline volta a executar do início, passa por `build` e `test` com sucesso e conclui `entrega` e `publicacao` em verde, atualizando normalmente a versão publicada.
+1. **Introdução da falha:** alterar a constante `LIMITE_FALTAS` em `src/js/regras.js` de `0.25` (25%) para `0.50` (50%) em uma branch de simulação, violando diretamente a regra de negócio de frequência da aplicação.
+2. **Execução e bloqueio automático:** vale notar que, em um Pull Request comum, os jobs `entrega` e `publicacao` já são sempre pulados pela condição `if: github.event_name != 'pull_request'` (e a proteção da `main` impede o merge com o check `test` reprovado). Por isso, para evidenciar diretamente o bloqueio causado pelo `needs: [build, test]` sem desativar a proteção da `main`, o workflow é disparado manualmente via **`workflow_dispatch`** na branch com `LIMITE_FALTAS = 0.50`. Nesse evento a condição `!= 'pull_request'` é satisfeita: o job `build` passa (arquivos presentes e sintaxe válida), o job `test` falha nos testes de frequência e os jobs `entrega` e `publicacao` ficam com status **skipped** exclusivamente por causa da falha nos testes, mantendo a versão publicada no ar sem alteração.
+3. **Correção e recuperação:** após reverter `LIMITE_FALTAS` para `0.25`, o pipeline volta a passar por `build` e `test` com sucesso e, na `main`, conclui `entrega` e `publicacao` em verde, mantendo a publicação íntegra.
 
 ### Evidências da simulação
 

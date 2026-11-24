@@ -10,7 +10,7 @@
 | 1 | Equipe, problema e objetivo | 1 min | João Vitor Trindade |
 | 2 | Demonstração do app | 2 min | João Vitor Romani |
 | 3 | Repositório, commits e branches | 1min30 | Gustavo Tesin |
-| 4 | Pipeline (build, testes, CI/CD) | 2min30 | Gustavo Tesin |
+| 4 | Pipeline (build, testes, CI/CD) | 2min30 | Gustavo Tesin + Samuel Ueno |
 | 5 | Falha, bloqueio e recuperação | 2 min | Gustavo Tesin + Samuel Ueno |
 | 6 | Documento, evidências e rastreabilidade | 1 min | Felipe Gomes |
 | 7 | Dificuldades, aprendizados e conclusão | 1 min | João Vitor Trindade |
@@ -43,28 +43,28 @@
 - **Tópicos:**
   - Organização do repo (`src/`, `tests/`, `.github/workflows/`, `docs/`) e contrato em `regras.js`
   - Branches por tarefa (`feat/disciplinas`, `feat/regras`, `test/regras`, `docs/readme`) + commits semânticos
-  - Branch `main` protegida: tudo entra via Pull Request revisado e validado pelo CI
+  - Após setup inicial na `main`, branch protegida: entregas entram via Pull Request revisado e validado pelo CI
 - **O que mostrar na tela:** **repositório no GitHub ao vivo** — aba *Commits*, gráfico de branches (*Insights > Network*) e *Pull Requests* fechados. *(Print reserva: Figura 2.)*
 
 ---
 
-## Slide 4 — Pipeline de CI/CD *(2min30 — Gustavo Tesin)*
+## Slide 4 — Pipeline de CI/CD *(2min30 — Gustavo Tesin + Samuel Ueno)*
 
 - **Tópicos:**
-  - Fluxo em `.github/workflows/ci-cd.yml`: `Build` → `Testes` → `Entrega` → `Publicação`
-  - Em PR rodam só `Build` (arquivos + `node --check`) e `Testes` (`npm test` com `node:test`)
-  - Em push na `main`, gera `dist/` + `versao.txt` e faz deploy automático no GitHub Pages (*Continuous Deployment*)
-- **O que mostrar na tela:** arquivo `.github/workflows/ci-cd.yml` (destacando `needs` e `if`) + aba **Actions** com o grafo de uma execução verde na `main`. *(Print reserva: Figura 3.)*
+  - Gustavo: fluxo em `.github/workflows/ci-cd.yml` (`Build` → `Testes` → `Entrega` → `Publicação`, `needs` e `if`)
+  - Samuel: job `Testes` com `npm test` (`node:test` nativo) cobrindo contrato e regras de negócio
+  - Gustavo: em push na `main`, gera `dist/` + `versao.txt` e publica no GitHub Pages (*Continuous Deployment*)
+- **O que mostrar na tela:** arquivo `.github/workflows/ci-cd.yml` (destacando `needs` e `if`), arquivos em `tests/` + aba **Actions** com o grafo de uma execução verde na `main`. *(Print reserva: Figura 3.)*
 
 ---
 
 ## Slide 5 — Simulação de falha, bloqueio e recuperação *(2 min — Gustavo Tesin + Samuel Ueno)*
 
 - **Tópicos:**
-  - Falha controlada: `LIMITE_FALTAS` alterado de `0.25` para `0.50` em `regras.js`
-  - Samuel Ueno mostra o teste de frequência falhando no `node:test`
-  - Gustavo Tesin mostra `Entrega` e `Publicação` como *skipped* (site preservado) e tudo verde após a correção
-- **O que mostrar na tela:** na aba **Actions**, abrir a execução reprovada (log do teste quebrado + jobs *skipped*) e em seguida a execução verde da correção. *(Prints reserva: Figuras 4, 5 e 6.)*
+  - Falha controlada (após merge de `test/regras`): `LIMITE_FALTAS` trocado de `0.25` para `0.50` em `regras.js`
+  - Samuel Ueno mostra o teste de frequência quebrando no `node:test`
+  - Gustavo Tesin mostra via `workflow_dispatch` que `Entrega` e `Publicação` ficam *skipped* pela falha no teste (site preservado) e tudo verde após corrigir
+- **O que mostrar na tela:** na aba **Actions**, abrir a execução reprovada via `workflow_dispatch` (log do teste quebrado + jobs *skipped*) e em seguida a execução verde da correção. *(Prints reserva: Figuras 4, 5 e 6.)*
 
 ---
 
@@ -90,6 +90,8 @@
 
 ## Checklist rápido antes de apresentar
 
-- [ ] Deixar abertas em abas separadas: site publicado, `versao.txt`, repositório no GitHub (Commits + PRs), arquivo `ci-cd.yml`, execução verde no Actions, execução com falha (`skipped`) e execução da correção.
+- [ ] Confirmar antes do ensaio que `test/regras` já foi mesclada na `main` e que existe caso de teste de frequência que falha com `LIMITE_FALTAS = 0.50`.
+- [ ] Garantir que o PDF final do relatório não contenha blocos auxiliares de rascunho (nota inicial, referência de código da Seção 3, observação da Seção 7, roteiro de perguntas da Seção 11 ou marcações `[PENDENTE]`).
+- [ ] Deixar abertas em abas separadas: site publicado, `versao.txt`, repositório no GitHub (Commits + PRs), arquivo `ci-cd.yml`, execução verde no Actions, execução com falha (`skipped` via `workflow_dispatch`) e execução da correção.
 - [ ] Ter todos os prints das Figuras 1 a 7 inseridos nos slides de backup caso a rede da sala falhe.
 - [ ] Fazer um ensaio cronometrado com o grupo para garantir que fique abaixo de 12 minutos.
