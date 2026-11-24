@@ -19,11 +19,11 @@ No contexto da disciplina, o principal objetivo do projeto é aplicar na prátic
 
 | Integrante | Responsabilidade principal |
 |---|---|
-| Gustavo Lovizotto | Configuração do repositório, pipeline de CI/CD, GitHub Pages e demonstração de falha |
-| `[NOME]` (Pessoa 2) | Interface web (`src/index.html`, `src/css/style.css` e `src/js/app.js`) |
-| `[NOME]` (Pessoa 3) | Regras de negócio (`src/js/regras.js`) |
-| `[NOME]` (Pessoa 4) | Testes automatizados (`tests/`) |
-| `[NOME]` (Pessoa 5) | Documentação (`README.md`, relatório técnico e roteiro da apresentação) |
+| Gustavo Tesin | Configuração do repositório, pipeline de CI/CD, GitHub Pages e demonstração de falha |
+| João Vitor Romani | Interface web (`src/index.html`, `src/css/style.css` e `src/js/app.js`) |
+| Felipe Gomes | Regras de negócio (`src/js/regras.js`) |
+| Samuel Ueno | Testes automatizados (`tests/`) |
+| João Vitor Trindade | Documentação (`README.md`, relatório técnico e roteiro da apresentação) |
 
 > Além da responsabilidade principal, todos os integrantes participam da revisão de Pull Requests e da validação das entregas.
 

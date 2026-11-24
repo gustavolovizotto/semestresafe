@@ -7,28 +7,28 @@
 
 | Parte | Tema | Tempo | Apresentador |
 |---|---|---|---|
-| 1 | Equipe, problema e objetivo | 1 min | `[NOME]` (Pessoa 5 / eu) |
-| 2 | Demonstração do app | 2 min | `[NOME]` (Pessoa 2) |
-| 3 | Repositório, commits e branches | 1min30 | Gustavo Lovizotto |
-| 4 | Pipeline (build, testes, CI/CD) | 2min30 | Gustavo Lovizotto |
-| 5 | Falha, bloqueio e recuperação | 2 min | Gustavo Lovizotto + `[NOME]` (Pessoa 4) |
-| 6 | Documento, evidências e rastreabilidade | 1 min | `[NOME]` (Pessoa 3) |
-| 7 | Dificuldades, aprendizados e conclusão | 1 min | `[NOME]` (Pessoa 5 / eu) |
+| 1 | Equipe, problema e objetivo | 1 min | João Vitor Trindade |
+| 2 | Demonstração do app | 2 min | João Vitor Romani |
+| 3 | Repositório, commits e branches | 1min30 | Gustavo Tesin |
+| 4 | Pipeline (build, testes, CI/CD) | 2min30 | Gustavo Tesin |
+| 5 | Falha, bloqueio e recuperação | 2 min | Gustavo Tesin + Samuel Ueno |
+| 6 | Documento, evidências e rastreabilidade | 1 min | Felipe Gomes |
+| 7 | Dificuldades, aprendizados e conclusão | 1 min | João Vitor Trindade |
 | **Total** | | **11 min** | |
 
 ---
 
-## Slide 1 — SemestreSafe: equipe, problema e objetivo *(1 min — eu)*
+## Slide 1 — SemestreSafe: equipe, problema e objetivo *(1 min — João Vitor Trindade)*
 
 - **Tópicos:**
   - Problema: perder o limite de 25% de faltas e calcular na mão a nota necessária na P2
   - Solução: web app simples em HTML/CSS/JS puro, publicado no GitHub Pages
   - Foco da disciplina: processo com Git, PRs, testes automatizados e deploy protegido por CI/CD
-- **O que mostrar na tela:** capa com nome do projeto, disciplina (ES46B – ES61), nomes dos 5 integrantes e link/QR Code do site (`https://gustavolovizotto.github.io/semestresafe/`).
+- **O que mostrar na tela:** capa com nome do projeto, disciplina (ES46B – ES61), nomes dos 5 integrantes (Gustavo Tesin, João Vitor Romani, Felipe Gomes, Samuel Ueno e João Vitor Trindade) e link/QR Code do site (`https://gustavolovizotto.github.io/semestresafe/`).
 
 ---
 
-## Slide 2 — Demonstração do SemestreSafe *(2 min — Pessoa 2)*
+## Slide 2 — Demonstração do SemestreSafe *(2 min — João Vitor Romani)*
 
 - **Tópicos:**
   - Cadastro de disciplina (nome, carga horária e média mínima) salvo no `localStorage`
@@ -38,7 +38,7 @@
 
 ---
 
-## Slide 3 — Repositório, commits e branches *(1min30 — Gustavo)*
+## Slide 3 — Repositório, commits e branches *(1min30 — Gustavo Tesin)*
 
 - **Tópicos:**
   - Organização do repo (`src/`, `tests/`, `.github/workflows/`, `docs/`) e contrato em `regras.js`
@@ -48,7 +48,7 @@
 
 ---
 
-## Slide 4 — Pipeline de CI/CD *(2min30 — Gustavo)*
+## Slide 4 — Pipeline de CI/CD *(2min30 — Gustavo Tesin)*
 
 - **Tópicos:**
   - Fluxo em `.github/workflows/ci-cd.yml`: `Build` → `Testes` → `Entrega` → `Publicação`
@@ -58,17 +58,17 @@
 
 ---
 
-## Slide 5 — Simulação de falha, bloqueio e recuperação *(2 min — Gustavo + Pessoa 4)*
+## Slide 5 — Simulação de falha, bloqueio e recuperação *(2 min — Gustavo Tesin + Samuel Ueno)*
 
 - **Tópicos:**
   - Falha controlada: `LIMITE_FALTAS` alterado de `0.25` para `0.50` em `regras.js`
-  - Pessoa 4 mostra o teste de frequência falhando no `node:test`
-  - Gustavo mostra `Entrega` e `Publicação` como *skipped* (site preservado) e tudo verde após a correção
+  - Samuel Ueno mostra o teste de frequência falhando no `node:test`
+  - Gustavo Tesin mostra `Entrega` e `Publicação` como *skipped* (site preservado) e tudo verde após a correção
 - **O que mostrar na tela:** na aba **Actions**, abrir a execução reprovada (log do teste quebrado + jobs *skipped*) e em seguida a execução verde da correção. *(Prints reserva: Figuras 4, 5 e 6.)*
 
 ---
 
-## Slide 6 — Documentação, evidências e rastreabilidade *(1 min — Pessoa 3)*
+## Slide 6 — Documentação, evidências e rastreabilidade *(1 min — Felipe Gomes)*
 
 - **Tópicos:**
   - Rastreabilidade ponta a ponta: commit no rodapé do site (`versao.txt`) ↔ execução no Actions ↔ código na `main`
@@ -78,7 +78,7 @@
 
 ---
 
-## Slide 7 — Dificuldades, aprendizados e conclusão *(1 min — eu)*
+## Slide 7 — Dificuldades, aprendizados e conclusão *(1 min — João Vitor Trindade)*
 
 - **Tópicos:**
   - Principais desafios: ajuste do workflow (Actions v5 / Node 22) e integração entre branches via contrato

@@ -22,13 +22,13 @@
 
 ## Lista de Figuras
 
-- **Figura 1** – Interface do SemestreSafe em funcionamento, exibindo cadastro de disciplinas, controle de faltas e simulador da P2. *(Seção 3 — `[PENDENTE – Pessoa 2]`)*
-- **Figura 2** – Histórico de commits, branches e Pull Requests no repositório do GitHub. *(Seção 5 — `[PENDENTE – Gustavo / equipe]`)*
-- **Figura 3** – Execução do pipeline de CI/CD concluída com sucesso (todos os jobs verdes na branch `main`). *(Seção 6 — `[PENDENTE – Gustavo]`)*
-- **Figura 4** – Pipeline reprovado na etapa de testes automatizados durante a simulação de falha (`LIMITE_FALTAS` alterado para `0.50`). *(Seção 9 — `[PENDENTE – Gustavo e Pessoa 4]`)*
-- **Figura 5** – Bloqueio automático do deploy: jobs de Entrega e Publicação marcados como *skipped* após falha nos testes. *(Seção 9 — `[PENDENTE – Gustavo]`)*
-- **Figura 6** – Recuperação do pipeline com todos os jobs verdes após a correção da constante `LIMITE_FALTAS` para `0.25`. *(Seção 9 — `[PENDENTE – Gustavo]`)*
-- **Figura 7** – Aplicação SemestreSafe acessível no GitHub Pages exibindo o hash do commit publicado no rodapé (rastreabilidade). *(Seção 10 — `[PENDENTE – Gustavo / Pessoa 5]`)*
+- **Figura 1** – Interface do SemestreSafe em funcionamento, exibindo cadastro de disciplinas, controle de faltas e simulador da P2. *(Seção 3 — `[PENDENTE – João Vitor Romani]`)*
+- **Figura 2** – Histórico de commits, branches e Pull Requests no repositório do GitHub. *(Seção 5 — `[PENDENTE – Gustavo Tesin / equipe]`)*
+- **Figura 3** – Execução do pipeline de CI/CD concluída com sucesso (todos os jobs verdes na branch `main`). *(Seção 6 — `[PENDENTE – Gustavo Tesin]`)*
+- **Figura 4** – Pipeline reprovado na etapa de testes automatizados durante a simulação de falha (`LIMITE_FALTAS` alterado para `0.50`). *(Seção 9 — `[PENDENTE – Gustavo Tesin e Samuel Ueno]`)*
+- **Figura 5** – Bloqueio automático do deploy: jobs de Entrega e Publicação marcados como *skipped* após falha nos testes. *(Seção 9 — `[PENDENTE – Gustavo Tesin]`)*
+- **Figura 6** – Recuperação do pipeline com todos os jobs verdes após a correção da constante `LIMITE_FALTAS` para `0.25`. *(Seção 9 — `[PENDENTE – Gustavo Tesin]`)*
+- **Figura 7** – Aplicação SemestreSafe acessível no GitHub Pages exibindo o hash do commit publicado no rodapé (rastreabilidade). *(Seção 10 — `[PENDENTE – Gustavo Tesin / João Vitor Trindade]`)*
 
 ---
 
@@ -50,11 +50,11 @@ O grupo atuou de forma integrada: antes de iniciar o desenvolvimento paralelo, t
 
 | Integrante | Papel principal | Principais entregas e participação |
 |---|---|---|
-| Gustavo Lovizotto | Repositório, CI/CD e simulação de falha | Estrutura inicial, proteção da `main`, workflow `.github/workflows/ci-cd.yml`, publicação no GitHub Pages, execução da simulação de falha e revisão de PRs |
-| `[NOME]` (Pessoa 2) | Interface do usuário | Desenvolvimento da tela em `src/index.html`, `src/css/style.css` e `src/js/app.js`, integração com `regras.js` e `localStorage`, revisão de PRs |
-| `[NOME]` (Pessoa 3) | Regras de negócio | Implementação das validações, cálculo de frequência e simulador da P2 em `src/js/regras.js`, documentação do escopo e revisão de PRs |
-| `[NOME]` (Pessoa 4) | Testes automatizados | Plano e implementação dos testes unitários em `tests/`, validação da falha controlada e revisão de PRs |
-| `[NOME]` (Pessoa 5) | Documentação e organização da entrega | Elaboração do `README.md`, consolidação deste relatório técnico, roteiro dos slides, checagem final de links/evidências e envio no Moodle |
+| Gustavo Tesin | Repositório, CI/CD e simulação de falha | Estrutura inicial, proteção da `main`, workflow `.github/workflows/ci-cd.yml`, publicação no GitHub Pages, execução da simulação de falha e revisão de PRs |
+| João Vitor Romani | Interface do usuário | Desenvolvimento da tela em `src/index.html`, `src/css/style.css` e `src/js/app.js`, integração com `regras.js` e `localStorage`, revisão de PRs |
+| Felipe Gomes | Regras de negócio | Implementação das validações, cálculo de frequência e simulador da P2 em `src/js/regras.js`, documentação do escopo e revisão de PRs |
+| Samuel Ueno | Testes automatizados | Plano e implementação dos testes unitários em `tests/`, validação da falha controlada e revisão de PRs |
+| João Vitor Trindade | Documentação e organização da entrega | Elaboração do `README.md`, consolidação deste relatório técnico, roteiro dos slides, checagem final de links/evidências e envio no Moodle |
 
 ---
 
@@ -72,9 +72,9 @@ Dessa forma, o objetivo geral deste trabalho é desenvolver, testar e publicar o
 
 ## 3. Escopo e funcionalidades
 
-`[PENDENTE – Pessoa 3: descrever o escopo do sistema, detalhando cada funcionalidade implementada (cadastro e remoção de disciplinas, registro de faltas, cálculo do percentual de presença/faltas restantes/status com limite de 25%, e simulação de nota necessária na P2 com indicação de "Aprovado", nota necessária ou "Reprovado"), além do que foi deixado fora de escopo.]`
+`[PENDENTE – Felipe Gomes: descrever o escopo do sistema, detalhando cada funcionalidade implementada (cadastro e remoção de disciplinas, registro de faltas, cálculo do percentual de presença/faltas restantes/status com limite de 25%, e simulação de nota necessária na P2 com indicação de "Aprovado", nota necessária ou "Reprovado"), além do que foi deixado fora de escopo.]`
 
-> **Referência do código já presente na `main` (`src/js/regras.js`) para apoiar o preenchimento da Pessoa 3:**
+> **Referência do código já presente na `main` (`src/js/regras.js`) para apoiar o preenchimento do Felipe Gomes:**
 > - Constante `LIMITE_FALTAS = 0.25`.
 > - `validarNota(n)`: verifica número entre 0 e 10.
 > - `validarFaltas(faltas, cargaHoraria)`: verifica inteiro entre `0` e `cargaHoraria`.
@@ -84,7 +84,7 @@ Dessa forma, o objetivo geral deste trabalho é desenvolver, testar e publicar o
 
 ### Evidências da aplicação em funcionamento
 
-`[PENDENTE – Pessoa 2: inserir aqui as capturas de tela do SemestreSafe funcionando (cadastro de disciplina, atualização de faltas com mudança de status e simulação de nota da P2) — Figura 1.]`
+`[PENDENTE – João Vitor Romani: inserir aqui as capturas de tela do SemestreSafe funcionando (cadastro de disciplina, atualização de faltas com mudança de status e simulação de nota da P2) — Figura 1.]`
 
 ---
 
@@ -151,7 +151,7 @@ semestresafe/
 │   └── index.html             # Página principal da aplicação
 ├── tests/
 │   ├── contrato.test.js       # Verifica se regras.js exporta o contrato esperado
-│   └── ...                    # Testes de comportamento das regras (Pessoa 4)
+│   └── ...                    # Testes de comportamento das regras (Samuel Ueno)
 ├── .gitignore                 # Ignora node_modules/, dist/ e .DS_Store
 ├── package.json               # Metadados do projeto e scripts npm
 └── README.md                  # Documentação principal do repositório
@@ -175,10 +175,10 @@ Os commits seguem mensagens curtas em português com prefixos semânticos indica
 
 Para evitar conflitos e garantir que nenhum código chegue à versão principal sem validação, o grupo adotou o modelo de **branches por tarefa** criadas a partir da `main`:
 
-- `feat/disciplinas` — desenvolvimento da interface e interação com o usuário (Pessoa 2);
-- `feat/regras` — implementação das regras de negócio (Pessoa 3, já integrada via Pull Request `#1`);
-- `test/regras` — testes unitários das regras de negócio (Pessoa 4);
-- `docs/readme` — atualização do `README.md`, relatório técnico e roteiro da apresentação (Pessoa 5).
+- `feat/disciplinas` — desenvolvimento da interface e interação com o usuário (João Vitor Romani — PR `#2`);
+- `feat/regras` — implementação das regras de negócio (Felipe Gomes — PR `#1`, já integrado na `main`);
+- `test/regras` — testes unitários das regras de negócio (Samuel Ueno);
+- `docs/readme` — atualização do `README.md`, relatório técnico e roteiro da apresentação (João Vitor Trindade — PR `#3`).
 
 A branch `main` foi configurada como **protegida** no GitHub, bloqueando pushes diretos. Toda contribuição precisa seguir o fluxo:
 1. Criar branch específica a partir da `main` atualizada;
@@ -188,7 +188,7 @@ A branch `main` foi configurada como **protegida** no GitHub, bloqueando pushes 
 
 ### Evidências do controle de versão
 
-`[PENDENTE – Gustavo / equipe: inserir print do histórico de commits, gráfico de branches e lista de Pull Requests no GitHub — Figura 2.]`
+`[PENDENTE – Gustavo Tesin / equipe: inserir print do histórico de commits, gráfico de branches e lista de Pull Requests no GitHub — Figura 2.]`
 
 ---
 
@@ -272,15 +272,15 @@ Dois mecanismos do YAML garantem a segurança do pipeline:
 
 ### Evidência do pipeline em execução com sucesso
 
-`[PENDENTE – Gustavo: inserir print do workflow CI/CD no GitHub Actions com os 4 jobs concluídos com sucesso na branch main — Figura 3.]`
+`[PENDENTE – Gustavo Tesin: inserir print do workflow CI/CD no GitHub Actions com os 4 jobs concluídos com sucesso na branch main — Figura 3.]`
 
 ---
 
 ## 7. Plano e execução dos testes
 
-`[PENDENTE – Pessoa 4: apresentar o plano de testes e os casos implementados em tests/regras.test.js (cenários válidos, limites de borda como exatamente 25% de faltas, faltas acima do limite, nota 0 e 10, aprovação direta, reprovação impossível de reverter na P2 e entradas inválidas que disparam exceção), explicar como os testes são executados com npm test e incluir o print/saída real dos testes passando localmente e no GitHub Actions.]`
+`[PENDENTE – Samuel Ueno: apresentar o plano de testes e os casos implementados em tests/regras.test.js (cenários válidos, limites de borda como exatamente 25% de faltas, faltas acima do limite, nota 0 e 10, aprovação direta, reprovação impossível de reverter na P2 e entradas inválidas que disparam exceção), explicar como os testes são executados com npm test e incluir o print/saída real dos testes passando localmente e no GitHub Actions.]`
 
-> **Observação sobre o estado atual na `main`:** já existe no repositório o arquivo `tests/contrato.test.js`, que verifica automaticamente se `src/js/regras.js` exporta as funções combinadas no contrato do grupo (`validarNota`, `validarFaltas`, `validarDisciplina`, `calcularFrequencia`, `calcularNotaNecessaria`) e a constante `LIMITE_FALTAS` como número. Os testes detalhados de comportamento serão descritos pela Pessoa 4 após o merge da branch `test/regras`.
+> **Observação sobre o estado atual na `main`:** já existe no repositório o arquivo `tests/contrato.test.js`, que verifica automaticamente se `src/js/regras.js` exporta as funções combinadas no contrato do grupo (`validarNota`, `validarFaltas`, `validarDisciplina`, `calcularFrequencia`, `calcularNotaNecessaria`) e a constante `LIMITE_FALTAS` como número. Os testes detalhados de comportamento serão descritos pelo Samuel Ueno após o merge da branch `test/regras`.
 
 ---
 
@@ -360,7 +360,7 @@ Para demonstrar na prática que o pipeline protege o ambiente publicado, foi pla
 
 ### Evidências da simulação
 
-`[PENDENTE – Gustavo e Pessoa 4: inserir aqui:]`
+`[PENDENTE – Gustavo Tesin e Samuel Ueno: inserir aqui:]`
 - `[PENDENTE – link da execução reprovada no GitHub Actions e hash do commit com LIMITE_FALTAS = 0.50]`
 - `[PENDENTE – print da falha no job de Testes mostrando a mensagem de erro do teste de frequência — Figura 4]`
 - `[PENDENTE – print da visualização geral do workflow mostrando Entrega e Publicação como "skipped" — Figura 5]`
@@ -396,12 +396,12 @@ A rastreabilidade ponta a ponta entre o que está no ar e o código-fonte no rep
 
 | Item | Registro |
 |---|---|
-| Commit final publicado (hash curto e link) | `[PENDENTE – Gustavo: hash e link do commit final na main]` |
+| Commit final publicado (hash curto e link) | `[PENDENTE – Gustavo Tesin: hash e link do commit final na main]` |
 | Conteúdo exibido em `versao.txt` / rodapé | `[PENDENTE – ex.: abc1234 (2026-11-25)]` |
-| Link da execução final verde no GitHub Actions | `[PENDENTE – Gustavo: URL do run final]` |
-| Link dos Pull Requests integrados | `[PENDENTE – listar links dos PRs #1, #2, ...]` |
+| Link da execução final verde no GitHub Actions | `[PENDENTE – Gustavo Tesin: URL do run final]` |
+| Pull Requests do projeto | [PR #1](https://github.com/gustavolovizotto/semestresafe/pull/1) (`feat/regras`, integrado), [PR #2](https://github.com/gustavolovizotto/semestresafe/pull/2) (`feat/disciplinas`), [PR #3](https://github.com/gustavolovizotto/semestresafe/pull/3) (`docs/readme`) `[PENDENTE – incluir PR de test/regras e eventuais PRs da simulação de falha]` |
 
-`[PENDENTE – Gustavo / Pessoa 5: inserir print do site publicado aberto no navegador (aba anônima) evidenciando o rodapé com o hash do commit — Figura 7.]`
+`[PENDENTE – Gustavo Tesin / João Vitor Trindade: inserir print do site publicado aberto no navegador (aba anônima) evidenciando o rodapé com o hash do commit — Figura 7.]`
 
 ---
 
@@ -417,18 +417,18 @@ A rastreabilidade ponta a ponta entre o que está no ar e o código-fonte no rep
 
 `[PENDENTE – 1 ou 2 frases de cada integrante sobre dificuldades enfrentadas e aprendizados]`
 
-- **Gustavo Lovizotto:** `[PENDENTE – Gustavo]`
-- **`[NOME]` (Pessoa 2):** `[PENDENTE – Pessoa 2]`
-- **`[NOME]` (Pessoa 3):** `[PENDENTE – Pessoa 3]`
-- **`[NOME]` (Pessoa 4):** `[PENDENTE – Pessoa 4]`
-- **`[NOME]` (Pessoa 5):** `[PENDENTE – Pessoa 5]`
+- **Gustavo Tesin:** `[PENDENTE – Gustavo Tesin]`
+- **João Vitor Romani:** `[PENDENTE – João Vitor Romani]`
+- **Felipe Gomes:** `[PENDENTE – Felipe Gomes]`
+- **Samuel Ueno:** `[PENDENTE – Samuel Ueno]`
+- **João Vitor Trindade:** `[PENDENTE – João Vitor Trindade]`
 
 > **Roteiro rápido de perguntas para coletar os relatos do grupo (remover antes de gerar o PDF final):**
-> - **Gustavo:** O que deu mais trabalho na configuração do GitHub Actions, do Pages ou da proteção da `main`? O que você destacou ao rodar a simulação de falha?
-> - **Pessoa 2:** Qual foi a principal dificuldade ao ligar a tela (`app.js`) às funções do `regras.js` e ao `localStorage`?
-> - **Pessoa 3:** Qual regra ou caso de borda (arredondamento, limite exato de 25%, validações) exigiu mais atenção na implementação?
-> - **Pessoa 4:** Como foi escrever testes com o `node:test` nativo e qual cenário foi mais importante cobrir para garantir o bloqueio do pipeline?
-> - **Pessoa 5:** Qual foi o maior aprendizado ao organizar a documentação técnica junto com o histórico real de branches, PRs e evidências?
+> - **Gustavo Tesin:** O que deu mais trabalho na configuração do GitHub Actions, do Pages ou da proteção da `main`? O que você destacou ao rodar a simulação de falha?
+> - **João Vitor Romani:** Qual foi a principal dificuldade ao ligar a tela (`app.js`) às funções do `regras.js` e ao `localStorage`?
+> - **Felipe Gomes:** Qual regra ou caso de borda (arredondamento, limite exato de 25%, validações) exigiu mais atenção na implementação?
+> - **Samuel Ueno:** Como foi escrever testes com o `node:test` nativo e qual cenário foi mais importante cobrir para garantir o bloqueio do pipeline?
+> - **João Vitor Trindade:** Qual foi o maior aprendizado ao organizar a documentação técnica junto com o histórico real de branches, PRs e evidências?
 
 ---
 
@@ -465,10 +465,10 @@ Durante o desenvolvimento do projeto SemestreSafe, integrantes do grupo utilizar
 
 | Integrante | Ferramenta(s) utilizada(s) | Finalidade de uso |
 |---|---|---|
-| Gustavo Lovizotto | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: revisão de sintaxe YAML / dúvidas sobre GitHub Actions]` |
-| `[NOME]` (Pessoa 2) | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na estruturação de CSS/HTML ou revisão de código]` |
-| `[NOME]` (Pessoa 3) | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: validação de casos de borda das regras de negócio]` |
-| `[NOME]` (Pessoa 4) | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na elaboração de casos de teste com node:test]` |
-| `[NOME]` (Pessoa 5) | `[PENDENTE – informar ferramenta(s) usada(s)]` | Apoio na estruturação inicial do `README.md`, rascunho do relatório técnico e roteiro dos slides, revisados e adaptados com base no repositório real |
+| Gustavo Tesin | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: revisão de sintaxe YAML / dúvidas sobre GitHub Actions]` |
+| João Vitor Romani | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na estruturação de CSS/HTML ou revisão de código]` |
+| Felipe Gomes | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: validação de casos de borda das regras de negócio]` |
+| Samuel Ueno | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na elaboração de casos de teste com node:test]` |
+| João Vitor Trindade | `[PENDENTE – informar ferramenta(s) usada(s)]` | Apoio na estruturação inicial do `README.md`, rascunho do relatório técnico e roteiro dos slides, revisados e adaptados com base no repositório real |
 
 O grupo declara que todo o código-fonte, arquivos de configuração do pipeline, testes automatizados e textos da documentação foram integralmente revisados, testados e compreendidos pelos integrantes, que assumem total responsabilidade pelo funcionamento da aplicação e pelo conteúdo entregue.
