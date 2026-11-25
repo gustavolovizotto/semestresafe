@@ -22,7 +22,7 @@
 
 ## Lista de Figuras
 
-- **Figura 1** – Interface do SemestreSafe em funcionamento, exibindo cadastro de disciplinas, controle de faltas e simulador da P2. *(Seção 3 — `[PENDENTE – João Vitor Romani]`)*
+- **Figura 1** – Interface do SemestreSafe em funcionamento, exibindo cadastro de disciplinas, controle de faltas e simulador da P2. *(Seção 3)*
 - **Figura 2** – Histórico de commits, branches e Pull Requests no repositório do GitHub. *(Seção 5)*
 - **Figura 3** – Execução do pipeline de CI/CD concluída com sucesso (todos os jobs verdes na branch `main`). *(Seção 6)*
 - **Figura 4** – Pipeline reprovado na etapa de testes automatizados durante a simulação de falha (`LIMITE_FALTAS` alterado para `0.50`). *(Seção 9)*
@@ -84,7 +84,13 @@ Dessa forma, o objetivo geral deste trabalho é desenvolver, testar e publicar o
 
 ### Evidências da aplicação em funcionamento
 
-`[PENDENTE – João Vitor Romani: inserir aqui as capturas de tela do SemestreSafe funcionando (cadastro de disciplina, atualização de faltas com mudança de status e simulação de nota da P2) — Figura 1.]`
+![Figura 1a – Interface do SemestreSafe em funcionamento](evidencias/figura-1a-interface.png)
+
+*Figura 1a – Interface do SemestreSafe publicada no GitHub Pages (versão `40a8430` no rodapé), com três disciplinas cadastradas, uma em cada status de frequência (Regular em verde, No limite em amarelo e Reprovado por falta em vermelho), e o simulador da P2: com média 6, uma P1 de 7 exige 5 na P2 e uma P1 de 4 exige 8.*
+
+![Figura 1b – Erro de validação no cadastro](evidencias/figura-1b-erro-validacao.png)
+
+*Figura 1b – Cadastro recusado: com nome vazio, carga horária em branco e média 11, a tela exibe as três mensagens devolvidas por `validarDisciplina` e não salva a disciplina.*
 
 ---
 
@@ -458,7 +464,7 @@ A rastreabilidade ponta a ponta entre o que está no ar e o código-fonte no rep
 `[PENDENTE – 1 ou 2 frases de cada integrante sobre dificuldades enfrentadas e aprendizados]`
 
 - **Gustavo Tesin:** A primeira execução do pipeline falhou por um erro de YAML (um `: ` dentro de um comando de uma linha só), e foi aí que ficou claro o valor de ver o pipeline rodar a cada push. A maior lição foi perceber que o pipeline só protege a produção se for o único caminho até ela: com o Pages publicando também direto da branch, a falha teria chegado ao ar.
-- **João Vitor Romani:** `[PENDENTE – João Vitor Romani]`
+- **João Vitor Romani:** A principal dificuldade foi manter a tela sempre consistente com os dados salvos. Optei por um ciclo único (alterar o array, salvar no `localStorage` e redesenhar a lista a partir dele), mas a revisão do Felipe no PR #2 mostrou efeitos colaterais dessa escolha: um item inválido no `localStorage` travava a página inteira, e redesenhar a lista fazia o foco do teclado se perder a cada clique. Corrigi isso validando os dados salvos com as próprias funções do `regras.js` e devolvendo o foco ao controle certo. Aprendi como a revisão por Pull Request encontra problemas que os testes automatizados das regras não cobrem, já que a interface não é testada no pipeline.
 - **Felipe Gomes:** `[PENDENTE – Felipe Gomes]`
 - **Samuel Ueno:** `[PENDENTE – Samuel Ueno]`
 - **João Vitor Trindade:** A principal preocupação na documentação foi manter o `README.md` e o relatório técnico fiéis ao código e ao workflow reais, sem descrever comportamentos que ainda não estivessem implementados. A revisão cruzada no Pull Request #3 ajudou a ajustar detalhes técnicos importantes, como a necessidade de acionar a simulação de falha via `workflow_dispatch` para comprovar o bloqueio pelo `needs` sem confundir com o filtro aplicado aos PRs.
@@ -505,7 +511,7 @@ Durante o desenvolvimento do projeto SemestreSafe, integrantes do grupo utilizar
 | Integrante | Ferramenta(s) utilizada(s) | Finalidade de uso |
 |---|---|---|
 | Gustavo Tesin | Claude (Anthropic) | Apoio na estrutura inicial do repositório, no workflow `ci-cd.yml` e no contrato de `regras.js`, na revisão dos Pull Requests, na execução da simulação de falha e no preenchimento das Seções 5, 6, 9 e 10 deste relatório |
-| João Vitor Romani | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na estruturação de CSS/HTML ou revisão de código]` |
+| João Vitor Romani | Claude Code (Anthropic) | Apoio na implementação da interface (`index.html`, `style.css`, `app.js`), em testes manuais no navegador, nas correções apontadas na revisão do PR #2 e na redação do relato individual e de trechos do relatório. Todo o conteúdo foi revisado e conferido com o código do repositório |
 | Felipe Gomes | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: validação de casos de borda das regras de negócio]` |
 | Samuel Ueno | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na elaboração de casos de teste com node:test]` |
 | João Vitor Trindade | Google Gemini | Apoio na estruturação inicial do `README.md`, rascunho do relatório técnico e roteiro dos slides, revisados e adaptados com base no repositório real |
