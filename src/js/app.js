@@ -148,6 +148,7 @@ function criarItem(d) {
   const classe = CLASSE_STATUS[freq.status];
 
   const item = criar('li', `disciplina ${classe}`);
+  item.dataset.id = d.id;
 
   const topo = criar('div', 'topo');
   const titulo = criar('div');
@@ -158,6 +159,7 @@ function criarItem(d) {
   const acoes = criar('div', 'acoes');
   const botaoRemover = criar('button', 'perigo', 'Remover');
   botaoRemover.type = 'button';
+  botaoRemover.dataset.acao = 'remover';
   botaoRemover.addEventListener('click', () => remover(d.id));
   acoes.append(criar('span', `status ${classe}`, freq.status), botaoRemover);
   topo.append(titulo, acoes);
@@ -166,10 +168,12 @@ function criarItem(d) {
   const linhaFaltas = criar('div', 'linha');
   const menos = criar('button', 'secundario', '−1 falta');
   menos.type = 'button';
+  menos.dataset.acao = 'menos';
   menos.disabled = !validarFaltas(d.faltas - 1, d.cargaHoraria);
   menos.addEventListener('click', () => alterarFaltas(d.id, -1));
   const mais = criar('button', 'secundario', '+1 falta');
   mais.type = 'button';
+  mais.dataset.acao = 'mais';
   mais.disabled = !validarFaltas(d.faltas + 1, d.cargaHoraria);
   mais.addEventListener('click', () => alterarFaltas(d.id, +1));
   linhaFaltas.append(criar('span', 'faltas', `Faltas: ${d.faltas} h`), menos, mais);
@@ -190,10 +194,12 @@ function criarItem(d) {
   campoP1.max = '10';
   campoP1.step = '0.1';
   campoP1.placeholder = '0 a 10';
+  campoP1.dataset.acao = 'p1';
   if (d.p1 !== null) campoP1.value = d.p1;
   rotulo.append(campoP1);
   const calcular = criar('button', '', 'Calcular');
   calcular.type = 'button';
+  calcular.dataset.acao = 'calcular';
   const saida = criar('span', 'resultado');
   calcular.addEventListener('click', () => calcularP2(d.id, campoP1, saida));
   campoP1.addEventListener('keydown', (e) => { if (e.key === 'Enter') calcularP2(d.id, campoP1, saida); });
@@ -213,10 +219,32 @@ function criarItem(d) {
   return item;
 }
 
+/**
+ * Devolve o foco ao mesmo controle depois de redesenhar (quem usa teclado não volta para o topo).
+ * Se o controle ficou desativado, foca outro botão do mesmo item; se o item foi removido, volta ao formulário.
+ */
+function restaurarFoco({ id, acao }) {
+  const item = lista.querySelector(`[data-id="${id}"]`);
+  if (!item) {
+    campoNome.focus();
+    return;
+  }
+  const alvo = item.querySelector(`[data-acao="${acao}"]:not(:disabled)`)
+    ?? item.querySelector('button:not(:disabled)');
+  alvo?.focus();
+}
+
 /** Redesenha a lista inteira a partir do array `disciplinas`. */
 function renderizar() {
+  const ativo = document.activeElement;
+  const foco = lista.contains(ativo)
+    ? { id: ativo.closest('.disciplina').dataset.id, acao: ativo.dataset.acao }
+    : null;
+
   lista.replaceChildren(...disciplinas.map(criarItem));
   vazio.hidden = disciplinas.length > 0;
+
+  if (foco) restaurarFoco(foco);
 }
 
 renderizar();
