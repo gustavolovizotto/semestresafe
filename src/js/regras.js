@@ -3,7 +3,7 @@
 // contrato do grupo: a tela (app.js) e os testes dependem deles.
 
 /** Limite de faltas: 25% da carga horária. Use esta constante no cálculo. */
-export const LIMITE_FALTAS = 0.50;
+export const LIMITE_FALTAS = 0.25;
 
 /** true se o valor é do tipo number e não é NaN. */
 const ehNumero = (valor) => typeof valor === 'number' && !Number.isNaN(valor);
