@@ -175,7 +175,7 @@ Os commits seguem mensagens curtas em português com prefixos semânticos indica
 
 Para evitar conflitos e garantir que nenhum código chegue à versão principal sem validação, o grupo adotou o modelo de **branches por tarefa** criadas a partir da `main`:
 
-- `feat/disciplinas` — desenvolvimento da interface e interação com o usuário (João Vitor Romani — PR `#2`);
+- `feat/disciplinas` — desenvolvimento da interface e interação com o usuário (João Vitor Romani — PR `#2`, já integrado na `main`);
 - `feat/regras` — implementação das regras de negócio (Felipe Gomes — PR `#1`, já integrado na `main`);
 - `test/regras` — testes unitários das regras de negócio (Samuel Ueno — `[PENDENTE – incluir número do PR]`);
 - `docs/readme` — atualização do `README.md`, relatório técnico e roteiro da apresentação (João Vitor Trindade — PR `#3`).
@@ -399,7 +399,7 @@ A rastreabilidade ponta a ponta entre o que está no ar e o código-fonte no rep
 | Commit final publicado (hash curto e link) | `[PENDENTE – Gustavo Tesin: hash e link do commit final na main]` |
 | Conteúdo exibido em `versao.txt` / rodapé | `[PENDENTE – ex.: abc1234 (2026-11-25)]` |
 | Link da execução final verde no GitHub Actions | `[PENDENTE – Gustavo Tesin: URL do run final]` |
-| Pull Requests do projeto | [PR #1](https://github.com/gustavolovizotto/semestresafe/pull/1) (`feat/regras`, integrado), [PR #2](https://github.com/gustavolovizotto/semestresafe/pull/2) (`feat/disciplinas`), [PR #3](https://github.com/gustavolovizotto/semestresafe/pull/3) (`docs/readme`) `[PENDENTE – incluir PR de test/regras e eventuais PRs da simulação de falha]` |
+| Pull Requests do projeto | [PR #1](https://github.com/gustavolovizotto/semestresafe/pull/1) (`feat/regras`, integrado), [PR #2](https://github.com/gustavolovizotto/semestresafe/pull/2) (`feat/disciplinas`, integrado), [PR #3](https://github.com/gustavolovizotto/semestresafe/pull/3) (`docs/readme`) `[PENDENTE – incluir PR de test/regras e eventuais PRs da simulação de falha]` |
 
 `[PENDENTE – Gustavo Tesin / João Vitor Trindade: inserir print do site publicado aberto no navegador (aba anônima) evidenciando o rodapé com o hash do commit — Figura 7.]`
 
@@ -421,14 +421,13 @@ A rastreabilidade ponta a ponta entre o que está no ar e o código-fonte no rep
 - **João Vitor Romani:** `[PENDENTE – João Vitor Romani]`
 - **Felipe Gomes:** `[PENDENTE – Felipe Gomes]`
 - **Samuel Ueno:** `[PENDENTE – Samuel Ueno]`
-- **João Vitor Trindade:** `[PENDENTE – João Vitor Trindade]`
+- **João Vitor Trindade:** A principal preocupação na documentação foi manter o `README.md` e o relatório técnico fiéis ao código e ao workflow reais, sem descrever comportamentos que ainda não estivessem implementados. A revisão cruzada no Pull Request #3 ajudou a ajustar detalhes técnicos importantes, como a necessidade de acionar a simulação de falha via `workflow_dispatch` para comprovar o bloqueio pelo `needs` sem confundir com o filtro aplicado aos PRs.
 
 > **Roteiro rápido de perguntas para coletar os relatos do grupo (remover antes de gerar o PDF final):**
 > - **Gustavo Tesin:** O que deu mais trabalho na configuração do GitHub Actions, do Pages ou da proteção da `main`? O que você destacou ao rodar a simulação de falha?
 > - **João Vitor Romani:** Qual foi a principal dificuldade ao ligar a tela (`app.js`) às funções do `regras.js` e ao `localStorage`?
 > - **Felipe Gomes:** Qual regra ou caso de borda (arredondamento, limite exato de 25%, validações) exigiu mais atenção na implementação?
 > - **Samuel Ueno:** Como foi escrever testes com o `node:test` nativo e qual cenário foi mais importante cobrir para garantir o bloqueio do pipeline?
-> - **João Vitor Trindade:** Qual foi o maior aprendizado ao organizar a documentação técnica junto com o histórico real de branches, PRs e evidências?
 
 ---
 
@@ -469,6 +468,6 @@ Durante o desenvolvimento do projeto SemestreSafe, integrantes do grupo utilizar
 | João Vitor Romani | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na estruturação de CSS/HTML ou revisão de código]` |
 | Felipe Gomes | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: validação de casos de borda das regras de negócio]` |
 | Samuel Ueno | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na elaboração de casos de teste com node:test]` |
-| João Vitor Trindade | `[PENDENTE – informar ferramenta(s) usada(s)]` | Apoio na estruturação inicial do `README.md`, rascunho do relatório técnico e roteiro dos slides, revisados e adaptados com base no repositório real |
+| João Vitor Trindade | Google Gemini | Apoio na estruturação inicial do `README.md`, rascunho do relatório técnico e roteiro dos slides, revisados e adaptados com base no repositório real |
 
 O grupo declara que todo o código-fonte, arquivos de configuração do pipeline, testes automatizados e textos da documentação foram integralmente revisados, testados e compreendidos pelos integrantes, que assumem total responsabilidade pelo funcionamento da aplicação e pelo conteúdo entregue.
