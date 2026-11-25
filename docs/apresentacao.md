@@ -1,0 +1,97 @@
+# Roteiro da Apresentação — Operação Deploy: SemestreSafe
+
+- **Tempo máximo:** 12 minutos (planejado para **11 minutos**, deixando 1 minuto de folga para troca de tela e apresentador)
+- **Formato:** pouco texto nos slides, foco em demonstração ao vivo e evidências reais (ter os prints salvos como plano B caso a internet oscile)
+
+## Divisão de tempo e apresentadores
+
+| Parte | Tema | Tempo | Apresentador |
+|---|---|---|---|
+| 1 | Equipe, problema e objetivo | 1 min | João Vitor Trindade |
+| 2 | Demonstração do app | 2 min | João Vitor Romani |
+| 3 | Repositório, commits e branches | 1min30 | Gustavo Tesin |
+| 4 | Pipeline (build, testes, CI/CD) | 2min30 | Gustavo Tesin + Samuel Ueno |
+| 5 | Falha, bloqueio e recuperação | 2 min | Gustavo Tesin + Samuel Ueno |
+| 6 | Documento, evidências e rastreabilidade | 1 min | Felipe Gomes |
+| 7 | Dificuldades, aprendizados e conclusão | 1 min | João Vitor Trindade |
+| **Total** | | **11 min** | |
+
+---
+
+## Slide 1 — SemestreSafe: equipe, problema e objetivo *(1 min — João Vitor Trindade)*
+
+- **Tópicos:**
+  - Problema: perder o limite de 25% de faltas e calcular na mão a nota necessária na P2
+  - Solução: web app simples em HTML/CSS/JS puro, publicado no GitHub Pages
+  - Foco da disciplina: processo com Git, PRs, testes automatizados e deploy protegido por CI/CD
+- **O que mostrar na tela:** capa com nome do projeto, disciplina (ES46B – ES61), nomes dos 5 integrantes (Gustavo Tesin, João Vitor Romani, Felipe Gomes, Samuel Ueno e João Vitor Trindade) e link/QR Code do site (`https://gustavolovizotto.github.io/semestresafe/`).
+
+---
+
+## Slide 2 — Demonstração do SemestreSafe *(2 min — João Vitor Romani)*
+
+- **Tópicos:**
+  - Cadastro de disciplina (nome, carga horária e média mínima) salvo no `localStorage`
+  - Controle de faltas com atualização automática do status (*Regular*, *No limite*, *Reprovado por falta*)
+  - Simulador de nota necessária na P2 a partir da nota da P1
+- **O que mostrar na tela:** **aplicação ao vivo** no navegador (`https://gustavolovizotto.github.io/semestresafe/`), fazendo um cadastro rápido, somando faltas até o limite de 25% e simulando a P2. *(Print reserva: Figura 1 — app funcionando.)*
+
+---
+
+## Slide 3 — Repositório, commits e branches *(1min30 — Gustavo Tesin)*
+
+- **Tópicos:**
+  - Organização do repo (`src/`, `tests/`, `.github/workflows/`, `docs/`) e contrato em `regras.js`
+  - Branches por tarefa (`feat/disciplinas`, `feat/regras`, `test/regras`, `docs/readme`) + commits semânticos
+  - Após setup inicial na `main`, branch protegida: entregas entram via Pull Request revisado e validado pelo CI
+- **O que mostrar na tela:** **repositório no GitHub ao vivo** — aba *Commits*, gráfico de branches (*Insights > Network*) e *Pull Requests* fechados. *(Print reserva: Figura 2.)*
+
+---
+
+## Slide 4 — Pipeline de CI/CD *(2min30 — Gustavo Tesin + Samuel Ueno)*
+
+- **Tópicos:**
+  - Gustavo: fluxo em `.github/workflows/ci-cd.yml` (`Build` → `Testes` → `Entrega` → `Publicação`, `needs` e `if`)
+  - Samuel: job `Testes` com `npm test` (`node:test` nativo) cobrindo contrato e regras de negócio
+  - Gustavo: em push na `main`, gera `dist/` + `versao.txt` e publica no GitHub Pages (*Continuous Deployment*)
+- **O que mostrar na tela:** arquivo `.github/workflows/ci-cd.yml` (destacando `needs` e `if`), arquivos em `tests/` + aba **Actions** com o grafo de uma execução verde na `main`. *(Print reserva: Figura 3.)*
+
+---
+
+## Slide 5 — Simulação de falha, bloqueio e recuperação *(2 min — Gustavo Tesin + Samuel Ueno)*
+
+- **Tópicos:**
+  - Falha controlada (após merge de `test/regras`): `LIMITE_FALTAS` trocado de `0.25` para `0.50` em `regras.js`
+  - Samuel Ueno mostra o teste de frequência quebrando no `node:test`
+  - Gustavo Tesin mostra via `workflow_dispatch` que `Entrega` e `Publicação` ficam *skipped* pela falha no teste (site preservado) e tudo verde após corrigir
+- **O que mostrar na tela:** na aba **Actions**, abrir a execução reprovada via `workflow_dispatch` (log do teste quebrado + jobs *skipped*) e em seguida a execução verde da correção. *(Prints reserva: Figuras 4, 5 e 6.)*
+
+---
+
+## Slide 6 — Documentação, evidências e rastreabilidade *(1 min — Felipe Gomes)*
+
+- **Tópicos:**
+  - Rastreabilidade ponta a ponta: commit no rodapé do site (`versao.txt`) ↔ execução no Actions ↔ código na `main`
+  - `README.md` atualizado com badge de status, instruções e fluxo de trabalho
+  - Relatório técnico completo com prints reais e links verificáveis
+- **O que mostrar na tela:** rodapé do site publicado (ou `versao.txt`) lado a lado com o mesmo hash de commit na aba *Commits*/*Actions* do GitHub, além de uma passagem rápida pelo `README.md`. *(Print reserva: Figura 7.)*
+
+---
+
+## Slide 7 — Dificuldades, aprendizados e conclusão *(1 min — João Vitor Trindade)*
+
+- **Tópicos:**
+  - Principais desafios: ajuste do workflow (Actions v5 / Node 22) e integração entre branches via contrato
+  - Aprendizado central: testes e CI/CD evitam que erro de regra de negócio vá para produção
+  - Próximos passos: pesos diferentes nas provas, exportação de dados e testes de interface
+- **O que mostrar na tela:** slide limpo com 3 bullets curtos (completar com os pontos levantados pelo grupo na Seção 11 do relatório) e link final do repositório/site para perguntas.
+
+---
+
+## Checklist rápido antes de apresentar
+
+- [ ] Confirmar antes do ensaio que `test/regras` já foi mesclada na `main` e que existe caso de teste de frequência que falha com `LIMITE_FALTAS = 0.50`.
+- [ ] Garantir que o PDF final do relatório não contenha blocos auxiliares de rascunho (nota inicial, referência de código da Seção 3, observação da Seção 7, roteiro de perguntas da Seção 11 ou marcações `[PENDENTE]`).
+- [ ] Deixar abertas em abas separadas: site publicado, `versao.txt`, repositório no GitHub (Commits + PRs), arquivo `ci-cd.yml`, execução verde no Actions, execução com falha (`skipped` via `workflow_dispatch`) e execução da correção.
+- [ ] Ter todos os prints das Figuras 1 a 7 inseridos nos slides de backup caso a rede da sala falhe.
+- [ ] Fazer um ensaio cronometrado com o grupo para garantir que fique abaixo de 12 minutos.
