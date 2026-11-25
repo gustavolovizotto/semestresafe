@@ -240,7 +240,7 @@ function criarItem(d) {
 
 /**
  * Devolve o foco ao mesmo controle depois de redesenhar (quem usa teclado não volta para o topo).
- * Se o controle ficou desativado, foca outro botão do mesmo item; se o item foi removido, volta ao formulário.
+ * Se o controle ficou desativado, foca o botão oposto de faltas; se o item foi removido, volta ao formulário.
  */
 function restaurarFoco({ id, acao }) {
   const item = lista.querySelector(`[data-id="${id}"]`);
@@ -248,8 +248,10 @@ function restaurarFoco({ id, acao }) {
     campoNome.focus();
     return;
   }
+  // Se o botão ficou desativado (ex.: +1 no limite), vai para o par dele, nunca para "Remover".
+  const par = { mais: 'menos', menos: 'mais' }[acao];
   const alvo = item.querySelector(`[data-acao="${acao}"]:not(:disabled)`)
-    ?? item.querySelector('button:not(:disabled)');
+    ?? item.querySelector(`[data-acao="${par}"]:not(:disabled)`);
   alvo?.focus();
 }
 
