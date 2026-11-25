@@ -23,12 +23,12 @@
 ## Lista de Figuras
 
 - **Figura 1** – Interface do SemestreSafe em funcionamento, exibindo cadastro de disciplinas, controle de faltas e simulador da P2. *(Seção 3 — `[PENDENTE – João Vitor Romani]`)*
-- **Figura 2** – Histórico de commits, branches e Pull Requests no repositório do GitHub. *(Seção 5 — `[PENDENTE – Gustavo Tesin / equipe]`)*
-- **Figura 3** – Execução do pipeline de CI/CD concluída com sucesso (todos os jobs verdes na branch `main`). *(Seção 6 — `[PENDENTE – Gustavo Tesin]`)*
-- **Figura 4** – Pipeline reprovado na etapa de testes automatizados durante a simulação de falha (`LIMITE_FALTAS` alterado para `0.50`). *(Seção 9 — `[PENDENTE – Gustavo Tesin e Samuel Ueno]`)*
-- **Figura 5** – Bloqueio automático do deploy: jobs de Entrega e Publicação marcados como *skipped* após falha nos testes. *(Seção 9 — `[PENDENTE – Gustavo Tesin]`)*
-- **Figura 6** – Recuperação do pipeline com todos os jobs verdes após a correção da constante `LIMITE_FALTAS` para `0.25`. *(Seção 9 — `[PENDENTE – Gustavo Tesin]`)*
-- **Figura 7** – Aplicação SemestreSafe acessível no GitHub Pages exibindo o hash do commit publicado no rodapé (rastreabilidade). *(Seção 10 — `[PENDENTE – Gustavo Tesin / João Vitor Trindade]`)*
+- **Figura 2** – Histórico de commits, branches e Pull Requests no repositório do GitHub. *(Seção 5)*
+- **Figura 3** – Execução do pipeline de CI/CD concluída com sucesso (todos os jobs verdes na branch `main`). *(Seção 6)*
+- **Figura 4** – Pipeline reprovado na etapa de testes automatizados durante a simulação de falha (`LIMITE_FALTAS` alterado para `0.50`). *(Seção 9)*
+- **Figura 5** – Bloqueio automático do deploy: jobs de Entrega e Publicação marcados como *skipped* após falha nos testes. *(Seção 9; mesma captura da Figura 4)*
+- **Figura 6** – Recuperação do pipeline com todos os jobs verdes após a correção da constante `LIMITE_FALTAS` para `0.25`. *(Seção 9)*
+- **Figura 7** – Aplicação SemestreSafe acessível no GitHub Pages exibindo o hash do commit publicado no rodapé (rastreabilidade). *(Seção 10)*
 
 ---
 
@@ -177,18 +177,27 @@ Para evitar conflitos e garantir que nenhum código chegue à versão principal 
 
 - `feat/disciplinas` — desenvolvimento da interface e interação com o usuário (João Vitor Romani — PR `#2`, já integrado na `main`);
 - `feat/regras` — implementação das regras de negócio (Felipe Gomes — PR `#1`, já integrado na `main`);
-- `test/regras` — testes unitários das regras de negócio (Samuel Ueno — `[PENDENTE – incluir número do PR]`);
-- `docs/readme` — atualização do `README.md`, relatório técnico e roteiro da apresentação (João Vitor Trindade — PR `#3`).
+- `test/regras` — testes unitários das regras de negócio (Samuel Ueno — PR `#4`, integrado na `main`);
+- `docs/readme` — atualização do `README.md`, relatório técnico e roteiro da apresentação (João Vitor Trindade — PR `#3`, integrado na `main`);
+- `demo/falha-limite-faltas` e `fix/limite-faltas` — simulação de falha e recuperação (Gustavo Tesin — PRs `#5` e `#6`, ver Seção 9).
 
 Os primeiros commits do repositório (`e853114` a `9a63bd0`, referentes à estrutura inicial, ao contrato base e aos ajustes iniciais do workflow) foram realizados diretamente na `main` durante a configuração inicial do ambiente. Concluída essa preparação, a branch `main` foi configurada como **protegida** no GitHub, bloqueando pushes diretos. A partir daí, todas as tarefas do grupo seguiram o fluxo:
 1. Criar branch específica a partir da `main` atualizada;
 2. Realizar commits pequenos e descritivos;
 3. Abrir um Pull Request (PR) para a `main`;
-4. Aguardar a execução obrigatória do CI (`Build` e `Testes`) no PR e a revisão de outro integrante antes de realizar o merge.
+4. Aguardar a execução do CI (`Build` e `Testes`) no PR e a revisão de outro integrante antes de realizar o merge.
+
+A proteção da `main` exige Pull Request, mas não exige que os checks estejam verdes para o merge. Quem garante que uma versão reprovada não chega ao ar é o próprio pipeline: na `main`, a Entrega e a Publicação só rodam se o Build e os Testes passarem (ver Seções 6 e 9).
 
 ### Evidências do controle de versão
 
-`[PENDENTE – Gustavo Tesin / equipe: inserir print do histórico de commits, gráfico de branches e lista de Pull Requests no GitHub — Figura 2.]`
+![Figura 2a – Histórico de commits da main](evidencias/figura-2a-historico-commits.png)
+
+*Figura 2a – Histórico de commits da `main`: cada tarefa entra por um merge de Pull Request (`Merge pull request #N`), com o status do pipeline de cada commit ao lado (✓ verde, ✗ vermelho). Os commits `516b6c8`/`731400d` (falha provocada) e `b761f0f`/`1131c4a` (correção) são os da Seção 9.*
+
+![Figura 2b – Pull Requests do projeto](evidencias/figura-2b-pull-requests.png)
+
+*Figura 2b – Os seis Pull Requests do projeto, um por branch de tarefa, com autor e resultado dos checks. O PR #5 aparece com checks reprovados (simulação de falha) e o PR #6 com a correção.*
 
 ---
 
@@ -272,7 +281,9 @@ Dois mecanismos do YAML garantem a segurança do pipeline:
 
 ### Evidência do pipeline em execução com sucesso
 
-`[PENDENTE – Gustavo Tesin: inserir print do workflow CI/CD no GitHub Actions com os 4 jobs concluídos com sucesso na branch main — Figura 3.]`
+![Figura 3 – Pipeline verde na main](evidencias/figura-3-pipeline-verde.png)
+
+*Figura 3 – Execução [#18](https://github.com/gustavolovizotto/semestresafe/actions/runs/45696220376) do workflow `ci-cd.yml`, disparada pelo push na `main` do merge do PR #4 (commit `9e38618`): Build, Testes, Entrega e Publicação concluídos com sucesso, com o artefato `github-pages` gerado.*
 
 ---
 
@@ -355,17 +366,41 @@ Embora os dois termos usem a mesma sigla (CD), eles representam níveis diferent
 Para demonstrar na prática que o pipeline protege o ambiente publicado, foi planejado um teste controlado de falha, bloqueio e recuperação **após a integração da suíte de comportamento (`test/regras`) na `main`** — já que `tests/contrato.test.js` valida apenas os tipos exportados (`typeof === 'number'`), enquanto `tests/regras.test.js` verifica os resultados reais do limite de 25% (por exemplo, para carga horária `60` e `15` faltas, `calcularFrequencia(60, 15).status` deve retornar `'No limite'`, mas retornaria `'Regular'` com limite de 50%):
 
 1. **Introdução da falha:** alterar a constante `LIMITE_FALTAS` em `src/js/regras.js` de `0.25` (25%) para `0.50` (50%) em uma branch de simulação, violando diretamente a regra de negócio de frequência da aplicação.
-2. **Execução e bloqueio automático:** vale notar que, em um Pull Request comum, os jobs `entrega` e `publicacao` já são sempre pulados pela condição `if: github.event_name != 'pull_request'` (e a proteção da `main` impede o merge com o check `test` reprovado). Por isso, para evidenciar diretamente o bloqueio causado pelo `needs: [build, test]` sem desativar a proteção da `main`, o workflow é disparado manualmente via **`workflow_dispatch`** na branch com `LIMITE_FALTAS = 0.50`. Nesse evento a condição `!= 'pull_request'` é satisfeita: o job `build` passa (arquivos presentes e sintaxe válida), o job `test` falha nos testes de frequência e os jobs `entrega` e `publicacao` ficam com status **skipped** exclusivamente por causa da falha nos testes, mantendo a versão publicada no ar sem alteração.
-3. **Correção e recuperação:** após reverter `LIMITE_FALTAS` para `0.25`, o pipeline volta a passar por `build` e `test` com sucesso e, na `main`, conclui `entrega` e `publicacao` em verde, mantendo a publicação íntegra.
+2. **Execução e bloqueio automático:** a alteração foi feita na branch `demo/falha-limite-faltas` e entrou na `main` pelo PR `#5`, como qualquer outra mudança do grupo. No próprio PR o check `Testes automatizados` já ficou vermelho (em PR, a Entrega e a Publicação não rodam por causa do `if: github.event_name != 'pull_request'`). O merge foi feito mesmo assim, de propósito: a proteção da `main` exige PR, mas não exige checks verdes, e o objetivo era mostrar o pipeline barrando a publicação no fluxo real da `main`. No push do merge, o job `build` passou, o job `test` falhou nos testes de frequência e os jobs `entrega` e `publicacao` ficaram **skipped** por causa do `needs: [build, test]`. A versão publicada continuou a anterior.
+3. **Correção e recuperação:** a constante voltou para `0.25` na branch `fix/limite-faltas` (PR `#6`). O check do PR passou e, no push do merge na `main`, o pipeline concluiu `build`, `test`, `entrega` e `publicacao` em verde, publicando a versão corrigida.
 
 ### Evidências da simulação
 
-`[PENDENTE – Gustavo Tesin e Samuel Ueno: inserir aqui:]`
-- `[PENDENTE – link da execução reprovada no GitHub Actions e hash do commit com LIMITE_FALTAS = 0.50]`
-- `[PENDENTE – print da falha no job de Testes mostrando a mensagem de erro do teste de frequência — Figura 4]`
-- `[PENDENTE – print da visualização geral do workflow mostrando Entrega e Publicação como "skipped" — Figura 5]`
-- `[PENDENTE – link da execução corrigida no GitHub Actions e hash do commit de correção]`
-- `[PENDENTE – print do pipeline verde novamente após a correção — Figura 6]`
+| Etapa | Commit na `main` | Execução do pipeline | Resultado | Versão no ar (`versao.txt`) |
+|---|---|---|---|---|
+| Antes da simulação (merge do PR #4) | [`9e38618`](https://github.com/gustavolovizotto/semestresafe/commit/9e38618f2dfd99333319378c7f55b0220c1cca54) | [#18](https://github.com/gustavolovizotto/semestresafe/actions/runs/45696220376) | 4 jobs verdes | `9e38618 (2026-11-25)` |
+| Falha provocada (merge do PR #5, `LIMITE_FALTAS = 0.50`) | [`731400d`](https://github.com/gustavolovizotto/semestresafe/commit/731400d0fe5dd1e7441fc26f7b8b3d06bf3909c2) | [#20](https://github.com/gustavolovizotto/semestresafe/actions/runs/45696535495) | Build ✓, Testes ✗, Entrega e Publicação *skipped* | continuou `9e38618 (2026-11-25)` |
+| Correção (merge do PR #6, `LIMITE_FALTAS = 0.25`) | [`1131c4a`](https://github.com/gustavolovizotto/semestresafe/commit/1131c4ab5986d36876d7a1d0df62872e4201bbf4) | [#22](https://github.com/gustavolovizotto/semestresafe/actions/runs/45696832345) | 4 jobs verdes | `1131c4a (2026-11-25)` |
+
+Saída do job `Testes automatizados` na execução #20 (trecho do log do GitHub Actions):
+
+```text
+not ok 1 - reprova por falta quando passa de 25% (60h, 16 faltas)
+  expected: 'Reprovado por falta'
+  actual: 'Regular'
+not ok 2 - fica no limite de 25% sem faltas restantes (60h, 15 faltas)
+  expected: 'No limite'
+  actual: 'Regular'
+not ok 3 - mantém frequência regular, 5 faltas restantes e 83.3% de presença (60h, 10 faltas)
+# pass 22
+# fail 3
+##[error]Process completed with exit code 1.
+```
+
+Com o limite em 50%, um aluno com 16 faltas em 60 h (26,7%) aparecia como "Regular" em vez de "Reprovado por falta". Os três testes de frequência pegaram o erro, e os outros 22 continuaram passando.
+
+![Figuras 4 e 5 – Pipeline reprovado e deploy bloqueado](evidencias/figura-4-5-pipeline-falha-deploy-bloqueado.png)
+
+*Figuras 4 e 5 – Execução #20 na `main` (commit `731400d`, `LIMITE_FALTAS = 0.50`): o job Testes automatizados falhou ("Process completed with exit code 1") e os jobs Entrega e Publicação ficaram skipped. O site seguiu exibindo a versão `9e38618`.*
+
+![Figura 6 – Pipeline recuperado](evidencias/figura-6-pipeline-recuperado.png)
+
+*Figura 6 – Execução #22 na `main` (commit `1131c4a`, `LIMITE_FALTAS = 0.25`): os quatro jobs verdes e a URL do GitHub Pages publicada pelo job Publicação.*
 
 ---
 
@@ -396,12 +431,16 @@ A rastreabilidade ponta a ponta entre o que está no ar e o código-fonte no rep
 
 | Item | Registro |
 |---|---|
-| Commit final publicado (hash curto e link) | `[PENDENTE – Gustavo Tesin: hash e link do commit final na main]` |
-| Conteúdo exibido em `versao.txt` / rodapé | `[PENDENTE – ex.: abc1234 (2026-11-25)]` |
-| Link da execução final verde no GitHub Actions | `[PENDENTE – Gustavo Tesin: URL do run final]` |
-| Pull Requests do projeto | [PR #1](https://github.com/gustavolovizotto/semestresafe/pull/1) (`feat/regras`, integrado), [PR #2](https://github.com/gustavolovizotto/semestresafe/pull/2) (`feat/disciplinas`, integrado), [PR #3](https://github.com/gustavolovizotto/semestresafe/pull/3) (`docs/readme`) `[PENDENTE – incluir PR de test/regras e eventuais PRs da simulação de falha]` |
+| Commit final publicado (hash curto e link) | [`1131c4a`](https://github.com/gustavolovizotto/semestresafe/commit/1131c4ab5986d36876d7a1d0df62872e4201bbf4) (merge do PR #6) |
+| Conteúdo exibido em `versao.txt` / rodapé | `1131c4a (2026-11-25)` |
+| Link da execução final verde no GitHub Actions | [Execução #22](https://github.com/gustavolovizotto/semestresafe/actions/runs/45696832345) |
+| Pull Requests do projeto | [PR #1](https://github.com/gustavolovizotto/semestresafe/pull/1) (`feat/regras`, integrado), [PR #2](https://github.com/gustavolovizotto/semestresafe/pull/2) (`feat/disciplinas`, integrado), [PR #3](https://github.com/gustavolovizotto/semestresafe/pull/3) (`docs/readme`, integrado), [PR #4](https://github.com/gustavolovizotto/semestresafe/pull/4) (`test/regras`, integrado), [PR #5](https://github.com/gustavolovizotto/semestresafe/pull/5) (`demo/falha-limite-faltas`, simulação de falha) e [PR #6](https://github.com/gustavolovizotto/semestresafe/pull/6) (`fix/limite-faltas`, correção) |
 
-`[PENDENTE – Gustavo Tesin / João Vitor Trindade: inserir print do site publicado aberto no navegador (aba anônima) evidenciando o rodapé com o hash do commit — Figura 7.]`
+![Figura 7 – Site publicado com a versão no rodapé](evidencias/figura-7-site-publicado.png)
+
+*Figura 7 – SemestreSafe no GitHub Pages, aberto sem sessão no navegador, com o rodapé "Versão: 1131c4a (2026-11-25)": o mesmo commit da execução #22 (Figura 6).*
+
+> Se houver outro merge na `main` antes da entrega (por exemplo, a versão final deste relatório), o pipeline publica de novo e o hash do rodapé passa a ser o desse merge. A tabela acima registra a versão no ar ao fim da simulação.
 
 ---
 
@@ -412,12 +451,13 @@ A rastreabilidade ponta a ponta entre o que está no ar e o código-fonte no rep
 - **Contrato antecipado em `src/js/regras.js`:** definir os nomes das funções, parâmetros e formatos de retorno logo no esqueleto inicial permitiu que interface, regras de negócio e testes avançassem em paralelo em branches separadas sem bloquear o restante da equipe.
 - **Zero dependências externas:** optar por JavaScript puro (ES Modules) e pelo runner nativo `node:test` eliminou problemas de compatibilidade de pacotes e deixou o tempo de execução do pipeline muito baixo.
 - **Atualização das Actions para `v5` (commit `9a63bd0`):** durante a configuração inicial do CI, foi necessário atualizar `actions/checkout` e `actions/setup-node` para `v5` com Node 22 devido à descontinuação do Node 20 nas actions do GitHub, além de corrigir a formatação YAML na verificação de sintaxe (commit `5105bdf`).
+- **Origem do GitHub Pages:** o Pages estava configurado para publicar também a partir da branch `main` ("Deploy from a branch"). Nesse modo, cada push dispara uma publicação paralela ("pages build and deployment") que não depende dos testes, e a simulação de falha publicaria a versão quebrada mesmo com o pipeline vermelho. Antes da simulação, a origem foi trocada para "GitHub Actions", e só o job `publicacao` passou a publicar.
 
 ### Relatos individuais dos integrantes
 
 `[PENDENTE – 1 ou 2 frases de cada integrante sobre dificuldades enfrentadas e aprendizados]`
 
-- **Gustavo Tesin:** `[PENDENTE – Gustavo Tesin]`
+- **Gustavo Tesin:** A primeira execução do pipeline falhou por um erro de YAML (um `: ` dentro de um comando de uma linha só), e foi aí que ficou claro o valor de ver o pipeline rodar a cada push. A maior lição foi perceber que o pipeline só protege a produção se for o único caminho até ela: com o Pages publicando também direto da branch, a falha teria chegado ao ar.
 - **João Vitor Romani:** `[PENDENTE – João Vitor Romani]`
 - **Felipe Gomes:** `[PENDENTE – Felipe Gomes]`
 - **Samuel Ueno:** `[PENDENTE – Samuel Ueno]`
@@ -464,7 +504,7 @@ Durante o desenvolvimento do projeto SemestreSafe, integrantes do grupo utilizar
 
 | Integrante | Ferramenta(s) utilizada(s) | Finalidade de uso |
 |---|---|---|
-| Gustavo Tesin | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: revisão de sintaxe YAML / dúvidas sobre GitHub Actions]` |
+| Gustavo Tesin | Claude (Anthropic) | Apoio na estrutura inicial do repositório, no workflow `ci-cd.yml` e no contrato de `regras.js`, na revisão dos Pull Requests, na execução da simulação de falha e no preenchimento das Seções 5, 6, 9 e 10 deste relatório |
 | João Vitor Romani | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na estruturação de CSS/HTML ou revisão de código]` |
 | Felipe Gomes | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: validação de casos de borda das regras de negócio]` |
 | Samuel Ueno | `[PENDENTE – informar ferramenta ou "Não utilizou"]` | `[PENDENTE – ex.: apoio na elaboração de casos de teste com node:test]` |
