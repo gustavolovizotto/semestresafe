@@ -160,6 +160,7 @@ function criarItem(d) {
   const botaoRemover = criar('button', 'perigo', 'Remover');
   botaoRemover.type = 'button';
   botaoRemover.dataset.acao = 'remover';
+  botaoRemover.setAttribute('aria-label', `Remover a disciplina ${d.nome}`);
   botaoRemover.addEventListener('click', () => remover(d.id));
   acoes.append(criar('span', `status ${classe}`, freq.status), botaoRemover);
   topo.append(titulo, acoes);
@@ -169,11 +170,13 @@ function criarItem(d) {
   const menos = criar('button', 'secundario', '−1 falta');
   menos.type = 'button';
   menos.dataset.acao = 'menos';
+  menos.setAttribute('aria-label', `Tirar 1 falta de ${d.nome}`);
   menos.disabled = !validarFaltas(d.faltas - 1, d.cargaHoraria);
   menos.addEventListener('click', () => alterarFaltas(d.id, -1));
   const mais = criar('button', 'secundario', '+1 falta');
   mais.type = 'button';
   mais.dataset.acao = 'mais';
+  mais.setAttribute('aria-label', `Adicionar 1 falta em ${d.nome}`);
   mais.disabled = !validarFaltas(d.faltas + 1, d.cargaHoraria);
   mais.addEventListener('click', () => alterarFaltas(d.id, +1));
   linhaFaltas.append(criar('span', 'faltas', `Faltas: ${d.faltas} h`), menos, mais);
@@ -200,6 +203,7 @@ function criarItem(d) {
   const calcular = criar('button', '', 'Calcular');
   calcular.type = 'button';
   calcular.dataset.acao = 'calcular';
+  calcular.setAttribute('aria-label', `Calcular a nota da P2 de ${d.nome}`);
   const saida = criar('span', 'resultado');
   calcular.addEventListener('click', () => calcularP2(d.id, campoP1, saida));
   campoP1.addEventListener('keydown', (e) => { if (e.key === 'Enter') calcularP2(d.id, campoP1, saida); });
