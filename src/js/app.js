@@ -122,15 +122,25 @@ function descreverResultado(resultado) {
   return { texto: `Você precisa de ${fmt(resultado)} na P2.`, classe: 'alerta' };
 }
 
-/** Valida a P1 digitada; se for válida, salva e redesenha. Se não, mostra o erro no próprio item. */
+/**
+ * Valida a P1 digitada; se for válida, salva e redesenha. Campo vazio apaga a P1 salva.
+ * Nota inválida só mostra o erro no próprio item (a P1 salva antes continua valendo).
+ */
 function calcularP2(id, campo, saida) {
-  const p1 = campo.value.trim() === '' ? NaN : Number(campo.value);
+  const d = disciplinas.find((x) => x.id === id);
+  // badInput: o navegador recusou o texto (ex.: "1e"), então value vem vazio mas o campo não está vazio.
+  if (campo.value.trim() === '' && !campo.validity.badInput) {
+    d.p1 = null;
+    salvar();
+    renderizar();
+    return;
+  }
+  const p1 = Number(campo.value);
   if (!validarNota(p1)) {
     saida.className = 'resultado erro';
     saida.textContent = 'Informe uma nota entre 0 e 10.';
     return;
   }
-  const d = disciplinas.find((x) => x.id === id);
   d.p1 = p1;
   salvar();
   renderizar();
