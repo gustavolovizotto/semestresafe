@@ -99,6 +99,7 @@ form > button { margin-top: 0.75rem; }
 
 /* Lista de disciplinas */
 .vazio { color: var(--suave); }
+.dica { margin: -0.4rem 0 0.75rem; color: var(--suave); font-size: 0.85rem; }
 
 .lista {
   list-style: none;

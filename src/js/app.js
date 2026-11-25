@@ -164,7 +164,7 @@ function criarItem(d) {
   const titulo = criar('div');
   titulo.append(
     criar('h3', '', d.nome),
-    criar('p', 'info', `${d.cargaHoraria} h · média mínima ${fmt(d.mediaMinima)}`),
+    criar('p', 'info', `${fmt(d.cargaHoraria)} h · média mínima ${fmt(d.mediaMinima)}`),
   );
   const acoes = criar('div', 'acoes');
   const botaoRemover = criar('button', 'perigo', 'Remover');
