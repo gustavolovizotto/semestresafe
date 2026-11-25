@@ -6,11 +6,24 @@ const CHAVE = 'semestresafe:disciplinas';
 
 // ---------- localStorage ----------
 
-/** Lê a lista salva. Se não houver nada (ou o conteúdo estiver corrompido), começa vazia. */
+/** true se um item salvo passa pelas próprias regras (evita que um dado ruim trave a tela). */
+function itemValido(d) {
+  return d !== null && typeof d === 'object'
+    && validarDisciplina(d).length === 0
+    && validarFaltas(d.faltas, d.cargaHoraria);
+}
+
+/**
+ * Lê a lista salva. Se não houver nada (ou o conteúdo estiver corrompido), começa vazia.
+ * Itens inválidos (editados à mão, de versão antiga etc.) são descartados, e uma P1 inválida vira null.
+ */
 function carregar() {
   try {
     const dados = JSON.parse(localStorage.getItem(CHAVE));
-    return Array.isArray(dados) ? dados : [];
+    if (!Array.isArray(dados)) return [];
+    return dados
+      .filter(itemValido)
+      .map((d) => ({ ...d, p1: validarNota(d.p1) ? d.p1 : null }));
   } catch {
     return [];
   }
