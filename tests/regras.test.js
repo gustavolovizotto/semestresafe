@@ -1,6 +1,12 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { calcularFrequencia, calcularNotaNecessaria } from '../src/js/regras.js';
+import {
+  calcularFrequencia,
+  calcularNotaNecessaria,
+  validarNota,
+  validarDisciplina,
+  validarFaltas,
+} from '../src/js/regras.js';
 
 describe('calcularFrequencia', () => {
   test('reprova por falta quando passa de 25% (60h, 16 faltas)', () => {
@@ -41,5 +47,61 @@ describe('calcularNotaNecessaria', () => {
       name: 'Error',
       message: 'Nota inválida',
     });
+  });
+});
+
+describe('validarNota', () => {
+  for (const nota of [-1, 11]) {
+    test(`rejeita nota ${nota} por estar fora do intervalo de 0 a 10`, () => {
+      assert.equal(validarNota(nota), false);
+    });
+  }
+
+  for (const nota of [0, 7.5, 10]) {
+    test(`aceita nota ${nota} dentro do intervalo de 0 a 10`, () => {
+      assert.equal(validarNota(nota), true);
+    });
+  }
+});
+
+describe('validarDisciplina', () => {
+  test('retorna os três erros na ordem nome, carga horária e média mínima', () => {
+    assert.deepEqual(
+      validarDisciplina({ nome: '  ', cargaHoraria: 0, mediaMinima: 12 }),
+      [
+        'Informe o nome da disciplina.',
+        'A carga horária deve ser maior que zero.',
+        'A média mínima deve estar entre 0 e 10.',
+      ],
+    );
+  });
+
+  test('não retorna erros para uma disciplina válida', () => {
+    assert.deepEqual(
+      validarDisciplina({ nome: 'Gerência de Configuração', cargaHoraria: 60, mediaMinima: 6 }),
+      [],
+    );
+  });
+});
+
+describe('validarFaltas', () => {
+  test('rejeita faltas negativas', () => {
+    assert.equal(validarFaltas(-1, 60), false);
+  });
+
+  test('rejeita faltas acima da carga horária (61 faltas em 60h)', () => {
+    assert.equal(validarFaltas(61, 60), false);
+  });
+
+  test('rejeita faltas fracionárias (2.5 faltas)', () => {
+    assert.equal(validarFaltas(2.5, 60), false);
+  });
+
+  test('aceita zero faltas', () => {
+    assert.equal(validarFaltas(0, 60), true);
+  });
+
+  test('aceita faltas iguais à carga horária (60 faltas em 60h)', () => {
+    assert.equal(validarFaltas(60, 60), true);
   });
 });
