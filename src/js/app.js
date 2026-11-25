@@ -230,6 +230,11 @@ function criarItem(d) {
   linhaNota.append(rotulo, calcular, saida);
 
   item.append(topo, linhaFaltas, linhaFreq, linhaNota);
+
+  // Com reprovação por falta, a nota da P2 não muda a situação: avisa para não dar falsa esperança.
+  if (freq.status === 'Reprovado por falta' && d.p1 !== null) {
+    item.append(criar('p', 'aviso', 'Atenção: reprovado por falta, a nota não muda a situação.'));
+  }
   return item;
 }
 
