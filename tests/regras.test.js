@@ -9,21 +9,30 @@ import {
 } from '../src/js/regras.js';
 
 describe('calcularFrequencia', () => {
-  test('reprova por falta quando passa de 25% (60h, 16 faltas)', () => {
-    assert.equal(calcularFrequencia(60, 16).status, 'Reprovado por falta');
+  test('reprova por falta quando passa de 25% (60h = 72 aulas, 19 faltas)', () => {
+    assert.equal(calcularFrequencia(60, 19).status, 'Reprovado por falta');
   });
 
-  test('fica no limite de 25% sem faltas restantes (60h, 15 faltas)', () => {
-    const resultado = calcularFrequencia(60, 15);
+  test('fica no limite de 25% sem faltas restantes (60h = 72 aulas, 18 faltas)', () => {
+    const resultado = calcularFrequencia(60, 18);
 
     assert.equal(resultado.status, 'No limite');
     assert.equal(resultado.faltasRestantes, 0);
+    assert.equal(resultado.percentualPresenca, 75);
   });
 
-  test('mantém frequência regular, 5 faltas restantes e 83.3% de presença (60h, 10 faltas)', () => {
+  test('mantém frequência regular, 8 faltas restantes e 86.1% de presença (60h = 72 aulas, 10 faltas)', () => {
     assert.deepEqual(calcularFrequencia(60, 10), {
-      percentualPresenca: 83.3,
-      faltasRestantes: 5,
+      percentualPresenca: 86.1,
+      faltasRestantes: 8,
+      status: 'Regular',
+    });
+  });
+
+  test('considera 1 falta como 1 aula de 50 min, mantendo 16 faltas em 60h como Regular', () => {
+    assert.deepEqual(calcularFrequencia(60, 16), {
+      percentualPresenca: 77.8,
+      faltasRestantes: 2,
       status: 'Regular',
     });
   });
@@ -89,8 +98,8 @@ describe('validarFaltas', () => {
     assert.equal(validarFaltas(-1, 60), false);
   });
 
-  test('rejeita faltas acima da carga horária (61 faltas em 60h)', () => {
-    assert.equal(validarFaltas(61, 60), false);
+  test('rejeita faltas acima do total de aulas da carga horária (73 faltas em 60h)', () => {
+    assert.equal(validarFaltas(73, 60), false);
   });
 
   test('rejeita faltas fracionárias (2.5 faltas)', () => {
@@ -101,7 +110,7 @@ describe('validarFaltas', () => {
     assert.equal(validarFaltas(0, 60), true);
   });
 
-  test('aceita faltas iguais à carga horária (60 faltas em 60h)', () => {
-    assert.equal(validarFaltas(60, 60), true);
+  test('aceita faltas iguais ao total de aulas da carga horária (72 faltas em 60h)', () => {
+    assert.equal(validarFaltas(72, 60), true);
   });
 });
