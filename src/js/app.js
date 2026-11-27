@@ -61,6 +61,9 @@ function lerNumero(campo) {
 /** Formata número no padrão brasileiro (83.3 → "83,3"). */
 const fmt = (n) => n.toLocaleString('pt-BR');
 
+/** Formata quantidade de aulas no singular ou plural. */
+const fmtAulas = (n) => `${n} ${n === 1 ? 'aula' : 'aulas'}`;
+
 /** Cria um elemento com classe e texto (sempre via textContent, nunca innerHTML). */
 function criar(tag, classe, texto) {
   const el = document.createElement(tag);
@@ -189,13 +192,13 @@ function criarItem(d) {
   mais.setAttribute('aria-label', `Adicionar 1 falta em ${d.nome}`);
   mais.disabled = !validarFaltas(d.faltas + 1, d.cargaHoraria);
   mais.addEventListener('click', () => alterarFaltas(d.id, +1));
-  linhaFaltas.append(criar('span', 'faltas', `Faltas: ${d.faltas} h`), menos, mais);
+  linhaFaltas.append(criar('span', 'faltas', `Faltas: ${fmtAulas(d.faltas)}`), menos, mais);
 
   // Frequência
   const linhaFreq = criar('div', 'linha');
   linhaFreq.append(
     criar('span', '', `Presença: ${fmt(freq.percentualPresenca)}%`),
-    criar('span', '', `· Ainda pode faltar: ${freq.faltasRestantes} h`),
+    criar('span', '', `· Ainda pode faltar: ${fmtAulas(freq.faltasRestantes)}`),
   );
 
   // Simulador da P2 (o resultado vem da P1 salva, então sobrevive ao recarregar a página)

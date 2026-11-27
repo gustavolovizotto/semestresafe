@@ -5,6 +5,10 @@
 /** Limite de faltas: 25% da carga horária. Use esta constante no cálculo. */
 export const LIMITE_FALTAS = 0.25;
 
+/** Duração de uma hora-relógio e de uma aula, em minutos. */
+const MINUTOS_POR_HORA = 60;
+export const MINUTOS_POR_AULA = 50;
+
 /** true se o valor é do tipo number e não é NaN. */
 const ehNumero = (valor) => typeof valor === 'number' && !Number.isNaN(valor);
 
@@ -16,9 +20,11 @@ export function validarNota(n) {
   return ehNumero(n) && n >= 0 && n <= 10;
 }
 
-/** true se faltas é inteiro, >= 0 e <= cargaHoraria. */
+/** true se faltas é inteiro, >= 0 e não ultrapassa a carga horária (1 falta = 1 aula de 50 min). */
 export function validarFaltas(faltas, cargaHoraria) {
-  return Number.isInteger(faltas) && faltas >= 0 && faltas <= cargaHoraria;
+  return Number.isInteger(faltas)
+    && faltas >= 0
+    && faltas * MINUTOS_POR_AULA <= cargaHoraria * MINUTOS_POR_HORA;
 }
 
 /**
@@ -44,7 +50,8 @@ export function validarDisciplina({ nome, cargaHoraria, mediaMinima }) {
 
 /**
  * { percentualPresenca, faltasRestantes, status }
- * maxFaltas = Math.floor(cargaHoraria * LIMITE_FALTAS)
+ * Cada falta equivale a 1 aula de 50 min; cargaHoraria está em horas (60 min).
+ * maxFaltas = Math.floor((cargaHoraria * 60 * LIMITE_FALTAS) / 50)
  * status: faltas > max → "Reprovado por falta"; faltas === max → "No limite"; senão "Regular"
  * Carga horária <= 0 ou faltas inválidas → throw new Error("Dados de frequência inválidos").
  */
@@ -53,8 +60,10 @@ export function calcularFrequencia(cargaHoraria, faltas) {
     throw new Error('Dados de frequência inválidos');
   }
 
-  const maxFaltas = Math.floor(cargaHoraria * LIMITE_FALTAS);
-  const percentualPresenca = arredondar1(((cargaHoraria - faltas) / cargaHoraria) * 100);
+  const totalMinutos = cargaHoraria * MINUTOS_POR_HORA;
+  const minutosFaltados = faltas * MINUTOS_POR_AULA;
+  const maxFaltas = Math.floor((totalMinutos * LIMITE_FALTAS) / MINUTOS_POR_AULA);
+  const percentualPresenca = arredondar1(((totalMinutos - minutosFaltados) / totalMinutos) * 100);
   const faltasRestantes = Math.max(0, maxFaltas - faltas);
 
   let status = 'Regular';
